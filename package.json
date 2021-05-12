@@ -1,0 +1,32 @@
+{
+  "name": "falcon.txt",
+  "private": true,
+  "workspaces": [
+    "@app/*"
+  ],
+  "scripts": {
+    "predev": "npm run start:services && ./scripts/wait-for-containers && tsc --build",
+    "dev": "concurrently npm:*:watch",
+    "start:services": "docker-compose up -d",
+    "server:watch": "npm run watch -w @app/server",
+    "tsc:watch": "tsc -b --watch --preserveWatchOutput",
+    "web:watch": "npm run start -w @app/web",
+    "clean": "git clean -Xdf -e '!.env*' -e '!.vscode/'",
+    "lint": "eslint --cache --fix --ignore-path=.gitignore --format=visualstudio ."
+  },
+  "devDependencies": {
+    "@types/node": "^15.0.3",
+    "@typescript-eslint/eslint-plugin": "^4.23.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "concurrently": "^6.0.0",
+    "eslint": "^7.23.0",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.3.1",
+    "eslint-plugin-react": "^7.23.1",
+    "eslint-plugin-simple-import-sort": "^7.0.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.2.3"
+  }
+}

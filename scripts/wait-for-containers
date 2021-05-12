@@ -1,0 +1,58 @@
+#!/usr/bin/env bash
+
+set -euo pipefail
+[ -n "${DEBUG:-}" ] && set -x
+
+RED="$(tput setaf 1 2>/dev/null || printf '')"
+GREEN="$(tput setaf 2 2>/dev/null || printf '')"
+RESET="$(tput sgr0 2>/dev/null || printf '')"
+
+usage() {
+    cat << EOF
+Usage: wait-for-containers [OPTIONS]
+
+Wait until your docker compose stack is healthy
+
+Options:
+  -h, --help          Show this message
+  -i, --interval SEC  Polling interval [default: 10]
+  -r, --retries SEC   Attempts to retry [default: 3]
+EOF
+}
+
+get_health() {
+    local fmt='{{if .Config.Healthcheck}}{{print .State.Health.Status}}{{else}}{{print "healthy"}}{{end}}'
+    docker inspect --format="$fmt" "$1"
+}
+
+wait_for_health() {
+    local attempt=1
+    while [ "$(get_health "$1")" != "healthy" ]; do
+        echo -n "."
+        [ "$attempt" -ge "${RETRIES:=3}" ] && return 1
+        sleep "${INTERVAL:=10}"
+        attempt=$((attempt+1))
+    done
+}
+
+while [[ $# -gt 0 ]]; do
+    case "$1" in
+        -r|--retries) RETRIES="$2" && shift;;
+        -i|--interval) INTERVAL="$2" && shift;;
+        -h|--help) usage && exit 0;;
+        *) usage && exit 1
+    esac
+    shift
+done
+
+for name in $(docker-compose ps --services); do
+    id=$(docker-compose ps -q "$name")
+    [ -z "$id" ] && continue
+    echo -n "$name"
+    if wait_for_health "$id"; then
+        echo -e " ${GREEN}✔${RESET}"
+    else
+        echo " ${RED}x${RESET}"
+        exit 1
+    fi
+done

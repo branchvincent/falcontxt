@@ -1,0 +1,16 @@
+query Organizations {
+  organizations {
+    nodes {
+      id
+      name
+      slug
+      facilities {
+        nodes {
+          id
+          name
+          slug
+        }
+      }
+    }
+  }
+}

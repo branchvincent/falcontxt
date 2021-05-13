@@ -1,5 +1,6 @@
 .docker/
 .eslintcache
+@app/client/src/index.ts
 dist/
 node_modules/
 tsconfig.tsbuildinfo

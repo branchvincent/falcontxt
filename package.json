@@ -9,6 +9,7 @@
     "dev": "concurrently npm:*:watch",
     "start:services": "docker-compose up -d",
     "tsc:watch": "tsc -b --watch --preserveWatchOutput",
+    "client:watch": "npm run -w @app/client watch",
     "db:watch": "npm run -w @app/db watch",
     "server:watch": "npm run -w @app/server watch",
     "web:watch": "npm run -w @app/web start",

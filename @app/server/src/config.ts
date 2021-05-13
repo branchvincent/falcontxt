@@ -3,6 +3,8 @@ import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector'
 import type { Pool } from 'pg'
 import { PostGraphileOptions } from 'postgraphile'
 
+import ExtendedSchemaPlugin from './graphql'
+
 // Connection string (or pg.Pool) for PostGraphile to use
 export const database: string | Pool =
   process.env.DATABASE_URL || 'postgres://user:pass@localhost:5432/db'
@@ -40,9 +42,7 @@ export const options: PostGraphileOptions = {
   exportGqlSchemaPath: `${__dirname}/../schema.graphql`,
   sortExport: true,
   enableQueryBatching: true,
-  appendPlugins: [PgSimplifyInflectorPlugin],
-  // jwtSecret: 'secret',
-  // jwtPgTypeIdentifier: 'app_public.jwt_token',
+  appendPlugins: [PgSimplifyInflectorPlugin, ExtendedSchemaPlugin],
 }
 
 // Server port

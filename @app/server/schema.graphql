@@ -256,6 +256,7 @@ enum FacilitiesOrderBy {
 type Facility implements Node {
   """The time this facility was created."""
   createdAt: Datetime
+  dummy: String
 
   """The primary unique identifier for the facility."""
   id: Int!

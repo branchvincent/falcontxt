@@ -8,9 +8,10 @@
     "predev": "npm run start:services && ./scripts/wait-for-containers && tsc --build",
     "dev": "concurrently npm:*:watch",
     "start:services": "docker-compose up -d",
-    "server:watch": "npm run watch -w @app/server",
+    "db:watch": "npm run -w @app/db watch",
+    "server:watch": "npm run -w @app/server watch",
     "tsc:watch": "tsc -b --watch --preserveWatchOutput",
-    "web:watch": "npm run start -w @app/web",
+    "web:watch": "npm run -w @app/web start",
     "clean": "git clean -Xdf -e '!.env*' -e '!.vscode/'",
     "lint": "eslint --cache --fix --ignore-path=.gitignore --format=visualstudio ."
   },

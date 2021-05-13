@@ -37,7 +37,7 @@ export const options: PostGraphileOptions = {
   extendedErrors: ['hint', 'detail', 'errcode'],
   allowExplain: true,
   legacyRelations: 'omit',
-  // exportGqlSchemaPath: `${__dirname}/../../../data/schema.graphql`,
+  exportGqlSchemaPath: `${__dirname}/../schema.graphql`,
   sortExport: true,
   enableQueryBatching: true,
   appendPlugins: [PgSimplifyInflectorPlugin],

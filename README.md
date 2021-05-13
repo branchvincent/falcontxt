@@ -8,7 +8,7 @@
 ```sh
 nvm use
 npm install
-npm run dev
+npm start
 ```
 
 By default, the following services will be available:

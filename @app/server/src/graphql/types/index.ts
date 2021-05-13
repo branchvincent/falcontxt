@@ -14,7 +14,6 @@ export default (): DocumentNode => {
     return types
   }, [])
   try {
-    console.log(`types: ${staticTypes}`)
     return mergeTypeDefs(staticTypes)
   } catch (e) {
     console.error(e)

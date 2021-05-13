@@ -1,3 +1,9 @@
+type Metric {
+  label: String
+  time: String
+  data: Float
+}
+
 extend type Facility {
-  dummy: String
+  metric(name: String!, start: String, end: String): [Metric]
 }

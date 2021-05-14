@@ -5,13 +5,11 @@
     "@app/*"
   ],
   "scripts": {
-    "prestart": "docker-compose up -d && ./scripts/wait-for-containers && tsc --build && npm run -w @app/db reset",
-    "start": "concurrently npm:*:watch",
-    "tsc:watch": "tsc -b --watch --preserveWatchOutput",
-    "client:watch": "npm run -w @app/client watch",
-    "db:watch": "npm run -w @app/db watch",
-    "server:watch": "npm run -w @app/server watch",
-    "web:watch": "npm run -w @app/web start",
+    "prestart": "mkdir -p .docker/ && docker compose up -d && ./scripts/wait-for-containers && npm run -w @app/db reset",
+    "start": "concurrently -n 'db,server,web' -c 'green,blue,magenta' npm:start:db npm:start:server npm:start:web",
+    "start:db": "npm run -w @app/db start",
+    "start:server": "npm run -w @app/server start",
+    "start:web": "npm run -w @app/web start",
     "clean": "git clean -Xdf -e '!.env*' -e '!.vscode/'",
     "lint": "eslint --cache --fix --ignore-path=.gitignore --format=visualstudio ."
   },

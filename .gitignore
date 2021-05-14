@@ -3,4 +3,5 @@
 @app/client/src/index.ts
 dist/
 node_modules/
+.vscode/
 tsconfig.tsbuildinfo

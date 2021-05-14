@@ -1,15 +1,11 @@
 import { loadFilesSync } from '@graphql-tools/load-files'
-import { mergeResolvers, ResolversDefinition } from '@graphql-tools/merge'
+import { mergeResolvers } from '@graphql-tools/merge'
+import { Resolvers } from 'postgraphile'
 
-function loadResolvers<
-  TContext,
-  T extends ResolversDefinition<TContext>,
->(): ResolversDefinition<T> {
+export default (): Resolvers => {
   const resolversArray = loadFilesSync(__dirname, {
     ignoreIndex: true,
     extensions: ['ts'],
   })
   return mergeResolvers([...resolversArray])
 }
-
-export default loadResolvers

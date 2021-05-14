@@ -501,7 +501,6 @@ type Device implements Node {
 
   """The primary unique identifier for the device."""
   id: Int!
-  metric(end: String, name: String!, start: String): [Metric]
 
   """The device’s name."""
   name: String!
@@ -792,7 +791,7 @@ type Facility implements Node {
 
   """The primary unique identifier for the facility."""
   id: Int!
-  metric(end: String, interval: String, query: String!, start: String): [Series]
+  metric(end: String, name: String!, start: String): [Metric]
 
   """The facility’s name."""
   name: String!
@@ -915,12 +914,6 @@ input FacilityPatch {
   updatedAt: Datetime
 }
 
-type Metric {
-  data: Float
-  label: String
-  time: String
-}
-
 """
 A filter to be used against Int fields. All fields are combined with a logical ‘and.’
 """
@@ -1023,6 +1016,12 @@ input JSONFilter {
 
   """Not included in the specified list."""
   notIn: [JSON!]
+}
+
+type Metric {
+  data: Float
+  label: String
+  time: String
 }
 
 """The definition of a metric."""
@@ -1953,17 +1952,6 @@ enum ReadingsOrderBy {
   NATURAL
   TIME_ASC
   TIME_DESC
-}
-
-type Series {
-  avg: Float
-  count: Int
-  first: Float
-  last: Float
-  max: Float
-  min: Float
-  sum: Float
-  time: String
 }
 
 """

@@ -4,7 +4,7 @@ import type { Pool } from 'pg'
 import { PostGraphileOptions } from 'postgraphile'
 import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter'
 
-import ExtendedSchemaPlugin from './graphql'
+import { extendResolvers, extendSchema } from './graphql'
 
 // Connection string (or pg.Pool) for PostGraphile to use
 export const database: string | Pool =
@@ -46,7 +46,8 @@ export const options: PostGraphileOptions = {
   appendPlugins: [
     PgSimplifyInflectorPlugin,
     ConnectionFilterPlugin,
-    ExtendedSchemaPlugin,
+    extendSchema,
+    extendResolvers,
   ],
 }
 

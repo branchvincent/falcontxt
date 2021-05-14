@@ -501,6 +501,7 @@ type Device implements Node {
 
   """The primary unique identifier for the device."""
   id: Int!
+  metric(end: String, name: String!, start: String): [Metric]
 
   """The device’s name."""
   name: String!
@@ -912,6 +913,12 @@ input FacilityPatch {
 
   """The time this facility was updated."""
   updatedAt: Datetime
+}
+
+type Metric {
+  data: Float
+  label: String
+  time: String
 }
 
 """

@@ -1,28 +1,52 @@
-import './App.css'
+import { FC } from 'react'
+import { ApolloProvider } from '@apollo/client';
+import { Layout, Empty } from 'antd';
+import { BrowserRouter as Router, Route, Switch, Redirect, useRouteMatch } from 'react-router-dom';
+import client from './apollo';
+import SideBar from './components/SideBar';
+import routes from './routes';
 
-import React from 'react'
+const { Content, Footer } = Layout;
 
-import logo from './logo.svg'
-
-function App(): React.ReactElement {
+const OrganizationRoutes : FC = () => {
+  let match = useRouteMatch();
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  )
-}
+    <Switch>
+      {routes.map(({ path, component }) => (
+        <Route exact key={path} path={`${match.url}${path}`} component={component} />
+      ))}
+    </Switch>
+  );
+};
 
-export default App
+const EmptyScreen : FC = () => {
+  return (
+    <Empty style={{ marginTop: '100px' }} description="Select an organization to continue." />
+  )
+};
+
+const App : FC = () => {
+  return (
+    <ApolloProvider client={client}>
+      <Layout style={{ minHeight: '100vh' }}>
+        <Router>
+          <SideBar routes={routes}/>
+          <Layout className="site-layout">
+            <Content style={{ padding: '20px' }}>
+                <Switch>
+                  <Route path="/t/:organization_slug" component={OrganizationRoutes} />
+                  <Route exact path="/" component={EmptyScreen} />
+                  <Redirect to={"/"} />
+                </Switch>
+            </Content>
+            <Footer style={{ fontSize: '0.8em', textAlign: 'center' }}>
+                Falcon.TXT ©2021
+            </Footer>
+          </Layout>
+        </Router>
+      </Layout>
+    </ApolloProvider>
+  );
+};
+
+export default App;

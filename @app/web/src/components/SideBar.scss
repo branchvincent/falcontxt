@@ -1,0 +1,16 @@
+.logo {
+  color: white;
+  font-weight: bold;
+  padding: 15px 25px;
+  font-size: 1.3em;
+  cursor: pointer;
+
+  &:hover {
+    color: #40a9ff;
+  }
+
+  &.collapsed {
+    padding: 15px 0px;
+    text-align: center;
+  }
+}

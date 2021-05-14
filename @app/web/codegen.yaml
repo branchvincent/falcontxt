@@ -1,0 +1,28 @@
+overwrite: true
+schema: "../server/schema.graphql"
+documents: "src/queries/**/*.ts"
+config:
+  namingConvention:
+    enumValues: keep
+  withHooks: true
+  withHOC: false
+  withComponent: false
+  scalars:
+    DateTime: Date | string
+    Long: number
+generates:
+  ./src/graphql.tsx:
+    - add: 
+        content: '/* eslint-disable */'
+    - typescript
+  src/queries/types:
+    preset: near-operation-file
+    presetConfig:
+      extension: .tsx
+      folder: types
+      baseTypesPath: ../../graphql
+    plugins:
+      - add: 
+          content: '/* eslint-disable */'
+      - typescript-operations
+      - typescript-react-apollo

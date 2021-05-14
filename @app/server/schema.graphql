@@ -2000,14 +2000,14 @@ input StringFilter {
   """Included in the specified list."""
   in: [String!]
 
-  """Included in the specified list (case-insensitive)."""
-  inInsensitive: [String!]
-
   """Contains the specified string (case-sensitive)."""
   includes: String
 
   """Contains the specified string (case-insensitive)."""
   includesInsensitive: String
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
 
   """
   Is null (if `true` is specified) or is not null (if `false` is specified).
@@ -2027,12 +2027,14 @@ input StringFilter {
   lessThanOrEqualToInsensitive: String
 
   """
-  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any
+  single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   like: String
 
   """
-  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  Matches the specified pattern (case-insensitive). An underscore (_) matches
+  any single character; a percent sign (%) matches any sequence of zero or more characters.
   """
   likeInsensitive: String
 
@@ -2059,22 +2061,26 @@ input StringFilter {
   """Not included in the specified list."""
   notIn: [String!]
 
-  """Not included in the specified list (case-insensitive)."""
-  notInInsensitive: [String!]
-
   """Does not contain the specified string (case-sensitive)."""
   notIncludes: String
 
   """Does not contain the specified string (case-insensitive)."""
   notIncludesInsensitive: String
 
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
   """
-  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  Does not match the specified pattern (case-sensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
   """
   notLike: String
 
   """
-  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  Does not match the specified pattern (case-insensitive). An underscore (_)
+  matches any single character; a percent sign (%) matches any sequence of zero
+  or more characters.
   """
   notLikeInsensitive: String
 

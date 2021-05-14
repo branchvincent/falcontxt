@@ -1,7 +1,42 @@
-import { FC } from 'react';
+import { Line } from '@ant-design/charts'
+import { DatePicker, Spin } from 'antd'
+import { FC } from 'react'
+import React, { useEffect, useState } from 'react'
 
-const Metrics : FC = () => {
-  return <div></div>;
-};
+import { useGetMetricsByTimeLazyQuery } from '../queries/types/metrics'
 
-export default Metrics;
+const { RangePicker } = DatePicker
+
+const Metrics: FC = () => {
+  const [dateRange, setDateRange] = useState<[string, string]>([
+    '2021-05-01',
+    '2021-06-01',
+  ])
+  const [getMetrics, { data, loading }] = useGetMetricsByTimeLazyQuery()
+
+  useEffect(() => {
+    const [from, to] = dateRange
+    getMetrics({ variables: { from, to } })
+  }, [getMetrics, dateRange])
+
+  if (loading) return <Spin />
+  return (
+    <div>
+      <RangePicker
+        picker="week"
+        onChange={(dates, dateStrings) => {
+          setDateRange(dateStrings)
+        }}
+      />
+      <Line
+        data={data?.readings?.nodes || []}
+        xField="time"
+        yField="data"
+        xAxis={{ tickCount: 5 }}
+        slider={{ start: 0.1, end: 0.5 }}
+      />
+    </div>
+  )
+}
+
+export default Metrics

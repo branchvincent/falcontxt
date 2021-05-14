@@ -11,10 +11,11 @@ config:
     DateTime: Date | string
     Long: number
 generates:
-  ./src/graphql.tsx:
-    - add: 
-        content: '/* eslint-disable */'
-    - typescript
+  src/graphql.tsx:
+    plugins:
+      - add:
+          content: '/* eslint-disable */'
+      - typescript
   src/queries/types:
     preset: near-operation-file
     presetConfig:
@@ -22,7 +23,7 @@ generates:
       folder: types
       baseTypesPath: ../../graphql
     plugins:
-      - add: 
+      - add:
           content: '/* eslint-disable */'
       - typescript-operations
       - typescript-react-apollo

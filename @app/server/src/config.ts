@@ -2,6 +2,7 @@
 import PgSimplifyInflectorPlugin from '@graphile-contrib/pg-simplify-inflector'
 import type { Pool } from 'pg'
 import { PostGraphileOptions } from 'postgraphile'
+import ConnectionFilterPlugin from 'postgraphile-plugin-connection-filter'
 
 import ExtendedSchemaPlugin from './graphql'
 
@@ -42,7 +43,11 @@ export const options: PostGraphileOptions = {
   exportGqlSchemaPath: `${__dirname}/../schema.graphql`,
   sortExport: true,
   enableQueryBatching: true,
-  appendPlugins: [PgSimplifyInflectorPlugin, ExtendedSchemaPlugin],
+  appendPlugins: [
+    PgSimplifyInflectorPlugin,
+    ConnectionFilterPlugin,
+    ExtendedSchemaPlugin,
+  ],
 }
 
 // Server port

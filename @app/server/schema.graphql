@@ -1,3 +1,41 @@
+"""All input for the create `Device` mutation."""
+input CreateDeviceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Device` to be created by this mutation."""
+  device: DeviceInput!
+}
+
+"""The output of our create `Device` mutation."""
+type CreateDevicePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Device` that was created by this mutation."""
+  device: Device
+
+  """An edge for our `Device`. May be used by Relay 1."""
+  deviceEdge(
+    """The method to use when ordering `Device`."""
+    orderBy: [DevicesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DevicesEdge
+
+  """Reads a single `Facility` that is related to this `Device`."""
+  facility: Facility
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
 """All input for the create `Facility` mutation."""
 input CreateFacilityInput {
   """
@@ -29,6 +67,41 @@ type CreateFacilityPayload {
 
   """Reads a single `Organization` that is related to this `Facility`."""
   organization: Organization
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the create `MetricDefinition` mutation."""
+input CreateMetricDefinitionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `MetricDefinition` to be created by this mutation."""
+  metricDefinition: MetricDefinitionInput!
+}
+
+"""The output of our create `MetricDefinition` mutation."""
+type CreateMetricDefinitionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `MetricDefinition` that was created by this mutation."""
+  metricDefinition: MetricDefinition
+
+  """An edge for our `MetricDefinition`. May be used by Relay 1."""
+  metricDefinitionEdge(
+    """The method to use when ordering `MetricDefinition`."""
+    orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MetricDefinitionsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -71,6 +144,44 @@ type CreateOrganizationPayload {
   query: Query
 }
 
+"""All input for the create `Reading` mutation."""
+input CreateReadingInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The `Reading` to be created by this mutation."""
+  reading: ReadingInput!
+}
+
+"""The output of our create `Reading` mutation."""
+type CreateReadingPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """Reads a single `Device` that is related to this `Reading`."""
+  device: Device
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+
+  """The `Reading` that was created by this mutation."""
+  reading: Reading
+
+  """An edge for our `Reading`. May be used by Relay 1."""
+  readingEdge(
+    """The method to use when ordering `Reading`."""
+    orderBy: [ReadingsOrderBy!] = [NATURAL]
+  ): ReadingsEdge
+}
+
 """A location in a connection that can be used for resuming pagination."""
 scalar Cursor
 
@@ -79,6 +190,113 @@ A point in time as described by the [ISO
 8601](https://en.wikipedia.org/wiki/ISO_8601) standard. May or may not include a timezone.
 """
 scalar Datetime
+
+"""
+A filter to be used against Datetime fields. All fields are combined with a logical ‘and.’
+"""
+input DatetimeFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Datetime
+
+  """Equal to the specified value."""
+  equalTo: Datetime
+
+  """Greater than the specified value."""
+  greaterThan: Datetime
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Datetime
+
+  """Included in the specified list."""
+  in: [Datetime!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Datetime
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Datetime
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Datetime
+
+  """Not equal to the specified value."""
+  notEqualTo: Datetime
+
+  """Not included in the specified list."""
+  notIn: [Datetime!]
+}
+
+"""All input for the `deleteDeviceByNodeId` mutation."""
+input DeleteDeviceByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Device` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteDeviceBySlug` mutation."""
+input DeleteDeviceBySlugInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The device’s description."""
+  slug: String!
+}
+
+"""All input for the `deleteDevice` mutation."""
+input DeleteDeviceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The primary unique identifier for the device."""
+  id: Int!
+}
+
+"""The output of our delete `Device` mutation."""
+type DeleteDevicePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedDeviceNodeId: ID
+
+  """The `Device` that was deleted by this mutation."""
+  device: Device
+
+  """An edge for our `Device`. May be used by Relay 1."""
+  deviceEdge(
+    """The method to use when ordering `Device`."""
+    orderBy: [DevicesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DevicesEdge
+
+  """Reads a single `Facility` that is related to this `Device`."""
+  facility: Facility
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
 
 """All input for the `deleteFacilityByNodeId` mutation."""
 input DeleteFacilityByNodeIdInput {
@@ -138,6 +356,68 @@ type DeleteFacilityPayload {
 
   """Reads a single `Organization` that is related to this `Facility`."""
   organization: Organization
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `deleteMetricDefinitionByName` mutation."""
+input DeleteMetricDefinitionByNameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The metric’s name."""
+  name: String!
+}
+
+"""All input for the `deleteMetricDefinitionByNodeId` mutation."""
+input DeleteMetricDefinitionByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `MetricDefinition` to be deleted.
+  """
+  nodeId: ID!
+}
+
+"""All input for the `deleteMetricDefinition` mutation."""
+input DeleteMetricDefinitionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The id of the metric definition."""
+  id: Int!
+}
+
+"""The output of our delete `MetricDefinition` mutation."""
+type DeleteMetricDefinitionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+  deletedMetricDefinitionNodeId: ID
+
+  """The `MetricDefinition` that was deleted by this mutation."""
+  metricDefinition: MetricDefinition
+
+  """An edge for our `MetricDefinition`. May be used by Relay 1."""
+  metricDefinitionEdge(
+    """The method to use when ordering `MetricDefinition`."""
+    orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MetricDefinitionsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.
@@ -207,6 +487,224 @@ type DeleteOrganizationPayload {
   query: Query
 }
 
+"""A device producing data."""
+type Device implements Node {
+  """The time this device was created."""
+  createdAt: Datetime
+  description: String!
+
+  """Reads a single `Facility` that is related to this `Device`."""
+  facility: Facility
+
+  """The device’s associated facility."""
+  facilityId: Int!
+
+  """The primary unique identifier for the device."""
+  id: Int!
+
+  """The device’s name."""
+  name: String!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  """Reads and enables pagination through a set of `Reading`."""
+  readings(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ReadingCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReadingFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Reading`."""
+    orderBy: [ReadingsOrderBy!] = [NATURAL]
+  ): ReadingsConnection!
+
+  """The device’s description."""
+  slug: String!
+
+  """The time this device was updated."""
+  updatedAt: Datetime
+}
+
+"""
+A condition to be used against `Device` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input DeviceCondition {
+  """Checks for equality with the object’s `createdAt` field."""
+  createdAt: Datetime
+
+  """Checks for equality with the object’s `description` field."""
+  description: String
+
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `slug` field."""
+  slug: String
+
+  """Checks for equality with the object’s `updatedAt` field."""
+  updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Device` object types. All fields are combined with a logical ‘and.’
+"""
+input DeviceFilter {
+  """Checks for all expressions in this list."""
+  and: [DeviceFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `description` field."""
+  description: StringFilter
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: DeviceFilter
+
+  """Checks for any expressions in this list."""
+  or: [DeviceFilter!]
+
+  """Filter by the object’s `slug` field."""
+  slug: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
+}
+
+"""An input for mutations affecting `Device`"""
+input DeviceInput {
+  """The time this device was created."""
+  createdAt: Datetime
+  description: String
+
+  """The device’s associated facility."""
+  facilityId: Int!
+
+  """The primary unique identifier for the device."""
+  id: Int
+
+  """The device’s name."""
+  name: String!
+
+  """The device’s description."""
+  slug: String!
+
+  """The time this device was updated."""
+  updatedAt: Datetime
+}
+
+"""
+Represents an update to a `Device`. Fields that are set will be updated.
+"""
+input DevicePatch {
+  """The time this device was created."""
+  createdAt: Datetime
+  description: String
+
+  """The device’s associated facility."""
+  facilityId: Int
+
+  """The primary unique identifier for the device."""
+  id: Int
+
+  """The device’s name."""
+  name: String
+
+  """The device’s description."""
+  slug: String
+
+  """The time this device was updated."""
+  updatedAt: Datetime
+}
+
+"""A connection to a list of `Device` values."""
+type DevicesConnection {
+  """
+  A list of edges which contains the `Device` and cursor to aid in pagination.
+  """
+  edges: [DevicesEdge!]!
+
+  """A list of `Device` objects."""
+  nodes: [Device!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Device` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Device` edge in the connection."""
+type DevicesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Device` at the end of the edge."""
+  node: Device!
+}
+
+"""Methods to use when ordering `Device`."""
+enum DevicesOrderBy {
+  CREATED_AT_ASC
+  CREATED_AT_DESC
+  DESCRIPTION_ASC
+  DESCRIPTION_DESC
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  SLUG_ASC
+  SLUG_DESC
+  UPDATED_AT_ASC
+  UPDATED_AT_DESC
+}
+
 """A connection to a list of `Facility` values."""
 type FacilitiesConnection {
   """
@@ -257,8 +755,43 @@ type Facility implements Node {
   """The time this facility was created."""
   createdAt: Datetime
 
+  """Reads and enables pagination through a set of `Device`."""
+  devices(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DeviceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: DeviceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Device`."""
+    orderBy: [DevicesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DevicesConnection!
+
   """The primary unique identifier for the facility."""
   id: Int!
+  metric(end: String, interval: String, query: String!, start: String): [Series]
 
   """The facility’s name."""
   name: String!
@@ -303,6 +836,38 @@ input FacilityCondition {
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Facility` object types. All fields are combined with a logical ‘and.’
+"""
+input FacilityFilter {
+  """Checks for all expressions in this list."""
+  and: [FacilityFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: FacilityFilter
+
+  """Checks for any expressions in this list."""
+  or: [FacilityFilter!]
+
+  """Filter by the object’s `organizationId` field."""
+  organizationId: IntFilter
+
+  """Filter by the object’s `slug` field."""
+  slug: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
 }
 
 """An input for mutations affecting `Facility`"""
@@ -350,9 +915,243 @@ input FacilityPatch {
 }
 
 """
+A filter to be used against Int fields. All fields are combined with a logical ‘and.’
+"""
+input IntFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: Int
+
+  """Equal to the specified value."""
+  equalTo: Int
+
+  """Greater than the specified value."""
+  greaterThan: Int
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: Int
+
+  """Included in the specified list."""
+  in: [Int!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: Int
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: Int
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: Int
+
+  """Not equal to the specified value."""
+  notEqualTo: Int
+
+  """Not included in the specified list."""
+  notIn: [Int!]
+}
+
+"""
+The `JSON` scalar type represents JSON values as specified by [ECMA-404](http://www.ecma-international.org/publications/files/ECMA-ST/ECMA-404.pdf).
+"""
+scalar JSON
+
+"""
+A filter to be used against JSON fields. All fields are combined with a logical ‘and.’
+"""
+input JSONFilter {
+  """Contained by the specified JSON."""
+  containedBy: JSON
+
+  """Contains the specified JSON."""
+  contains: JSON
+
+  """Contains all of the specified keys."""
+  containsAllKeys: [String!]
+
+  """Contains any of the specified keys."""
+  containsAnyKeys: [String!]
+
+  """Contains the specified key."""
+  containsKey: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: JSON
+
+  """Equal to the specified value."""
+  equalTo: JSON
+
+  """Greater than the specified value."""
+  greaterThan: JSON
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: JSON
+
+  """Included in the specified list."""
+  in: [JSON!]
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: JSON
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: JSON
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: JSON
+
+  """Not equal to the specified value."""
+  notEqualTo: JSON
+
+  """Not included in the specified list."""
+  notIn: [JSON!]
+}
+
+"""The definition of a metric."""
+type MetricDefinition implements Node {
+  """The id of the metric definition."""
+  id: Int!
+
+  """The metric’s name."""
+  name: String!
+
+  """
+  A globally unique identifier. Can be used in various places throughout the system to identify this single value.
+  """
+  nodeId: ID!
+
+  """The metric’s definition."""
+  query: String!
+}
+
+"""
+A condition to be used against `MetricDefinition` object types. All fields are
+tested for equality and combined with a logical ‘and.’
+"""
+input MetricDefinitionCondition {
+  """Checks for equality with the object’s `id` field."""
+  id: Int
+
+  """Checks for equality with the object’s `name` field."""
+  name: String
+
+  """Checks for equality with the object’s `query` field."""
+  query: String
+}
+
+"""
+A filter to be used against `MetricDefinition` object types. All fields are combined with a logical ‘and.’
+"""
+input MetricDefinitionFilter {
+  """Checks for all expressions in this list."""
+  and: [MetricDefinitionFilter!]
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: MetricDefinitionFilter
+
+  """Checks for any expressions in this list."""
+  or: [MetricDefinitionFilter!]
+
+  """Filter by the object’s `query` field."""
+  query: StringFilter
+}
+
+"""An input for mutations affecting `MetricDefinition`"""
+input MetricDefinitionInput {
+  """The id of the metric definition."""
+  id: Int
+
+  """The metric’s name."""
+  name: String!
+
+  """The metric’s definition."""
+  query: String!
+}
+
+"""
+Represents an update to a `MetricDefinition`. Fields that are set will be updated.
+"""
+input MetricDefinitionPatch {
+  """The id of the metric definition."""
+  id: Int
+
+  """The metric’s name."""
+  name: String
+
+  """The metric’s definition."""
+  query: String
+}
+
+"""A connection to a list of `MetricDefinition` values."""
+type MetricDefinitionsConnection {
+  """
+  A list of edges which contains the `MetricDefinition` and cursor to aid in pagination.
+  """
+  edges: [MetricDefinitionsEdge!]!
+
+  """A list of `MetricDefinition` objects."""
+  nodes: [MetricDefinition!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `MetricDefinition` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `MetricDefinition` edge in the connection."""
+type MetricDefinitionsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `MetricDefinition` at the end of the edge."""
+  node: MetricDefinition!
+}
+
+"""Methods to use when ordering `MetricDefinition`."""
+enum MetricDefinitionsOrderBy {
+  ID_ASC
+  ID_DESC
+  NAME_ASC
+  NAME_DESC
+  NATURAL
+  PRIMARY_KEY_ASC
+  PRIMARY_KEY_DESC
+  QUERY_ASC
+  QUERY_DESC
+}
+
+"""
 The root mutation type which contains root level fields which mutate data.
 """
 type Mutation {
+  """Creates a single `Device`."""
+  createDevice(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateDeviceInput!
+  ): CreateDevicePayload
+
   """Creates a single `Facility`."""
   createFacility(
     """
@@ -361,6 +1160,14 @@ type Mutation {
     input: CreateFacilityInput!
   ): CreateFacilityPayload
 
+  """Creates a single `MetricDefinition`."""
+  createMetricDefinition(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateMetricDefinitionInput!
+  ): CreateMetricDefinitionPayload
+
   """Creates a single `Organization`."""
   createOrganization(
     """
@@ -368,6 +1175,38 @@ type Mutation {
     """
     input: CreateOrganizationInput!
   ): CreateOrganizationPayload
+
+  """Creates a single `Reading`."""
+  createReading(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: CreateReadingInput!
+  ): CreateReadingPayload
+
+  """Deletes a single `Device` using a unique key."""
+  deleteDevice(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDeviceInput!
+  ): DeleteDevicePayload
+
+  """Deletes a single `Device` using its globally unique id."""
+  deleteDeviceByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDeviceByNodeIdInput!
+  ): DeleteDevicePayload
+
+  """Deletes a single `Device` using a unique key."""
+  deleteDeviceBySlug(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteDeviceBySlugInput!
+  ): DeleteDevicePayload
 
   """Deletes a single `Facility` using a unique key."""
   deleteFacility(
@@ -393,6 +1232,30 @@ type Mutation {
     input: DeleteFacilityBySlugInput!
   ): DeleteFacilityPayload
 
+  """Deletes a single `MetricDefinition` using a unique key."""
+  deleteMetricDefinition(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteMetricDefinitionInput!
+  ): DeleteMetricDefinitionPayload
+
+  """Deletes a single `MetricDefinition` using a unique key."""
+  deleteMetricDefinitionByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteMetricDefinitionByNameInput!
+  ): DeleteMetricDefinitionPayload
+
+  """Deletes a single `MetricDefinition` using its globally unique id."""
+  deleteMetricDefinitionByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: DeleteMetricDefinitionByNodeIdInput!
+  ): DeleteMetricDefinitionPayload
+
   """Deletes a single `Organization` using a unique key."""
   deleteOrganization(
     """
@@ -417,6 +1280,30 @@ type Mutation {
     input: DeleteOrganizationBySlugInput!
   ): DeleteOrganizationPayload
 
+  """Updates a single `Device` using a unique key and a patch."""
+  updateDevice(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDeviceInput!
+  ): UpdateDevicePayload
+
+  """Updates a single `Device` using its globally unique id and a patch."""
+  updateDeviceByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDeviceByNodeIdInput!
+  ): UpdateDevicePayload
+
+  """Updates a single `Device` using a unique key and a patch."""
+  updateDeviceBySlug(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateDeviceBySlugInput!
+  ): UpdateDevicePayload
+
   """Updates a single `Facility` using a unique key and a patch."""
   updateFacility(
     """
@@ -440,6 +1327,32 @@ type Mutation {
     """
     input: UpdateFacilityBySlugInput!
   ): UpdateFacilityPayload
+
+  """Updates a single `MetricDefinition` using a unique key and a patch."""
+  updateMetricDefinition(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateMetricDefinitionInput!
+  ): UpdateMetricDefinitionPayload
+
+  """Updates a single `MetricDefinition` using a unique key and a patch."""
+  updateMetricDefinitionByName(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateMetricDefinitionByNameInput!
+  ): UpdateMetricDefinitionPayload
+
+  """
+  Updates a single `MetricDefinition` using its globally unique id and a patch.
+  """
+  updateMetricDefinitionByNodeId(
+    """
+    The exclusive input argument for this mutation. An object type, make sure to see documentation for this object’s fields.
+    """
+    input: UpdateMetricDefinitionByNodeIdInput!
+  ): UpdateMetricDefinitionPayload
 
   """Updates a single `Organization` using a unique key and a patch."""
   updateOrganization(
@@ -494,6 +1407,11 @@ type Organization implements Node {
     """
     condition: FacilityCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FacilityFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -547,6 +1465,35 @@ input OrganizationCondition {
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
+}
+
+"""
+A filter to be used against `Organization` object types. All fields are combined with a logical ‘and.’
+"""
+input OrganizationFilter {
+  """Checks for all expressions in this list."""
+  and: [OrganizationFilter!]
+
+  """Filter by the object’s `createdAt` field."""
+  createdAt: DatetimeFilter
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Filter by the object’s `name` field."""
+  name: StringFilter
+
+  """Negates the expression."""
+  not: OrganizationFilter
+
+  """Checks for any expressions in this list."""
+  or: [OrganizationFilter!]
+
+  """Filter by the object’s `slug` field."""
+  slug: StringFilter
+
+  """Filter by the object’s `updatedAt` field."""
+  updatedAt: DatetimeFilter
 }
 
 """An input for mutations affecting `Organization`"""
@@ -647,6 +1594,49 @@ type PageInfo {
 
 """The root query type which gives access points into the data universe."""
 type Query implements Node {
+  device(id: Int!): Device
+
+  """Reads a single `Device` using its globally unique `ID`."""
+  deviceByNodeId(
+    """The globally unique `ID` to be used in selecting a single `Device`."""
+    nodeId: ID!
+  ): Device
+  deviceBySlug(slug: String!): Device
+
+  """Reads and enables pagination through a set of `Device`."""
+  devices(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: DeviceCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: DeviceFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Device`."""
+    orderBy: [DevicesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DevicesConnection
+
   """Reads and enables pagination through a set of `Facility`."""
   facilities(
     """Read all values in the set after (below) this cursor."""
@@ -659,6 +1649,11 @@ type Query implements Node {
     A condition to be used in determining which values should be returned by the collection.
     """
     condition: FacilityCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FacilityFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -683,6 +1678,50 @@ type Query implements Node {
     nodeId: ID!
   ): Facility
   facilityBySlug(slug: String!): Facility
+  metricDefinition(id: Int!): MetricDefinition
+  metricDefinitionByName(name: String!): MetricDefinition
+
+  """Reads a single `MetricDefinition` using its globally unique `ID`."""
+  metricDefinitionByNodeId(
+    """
+    The globally unique `ID` to be used in selecting a single `MetricDefinition`.
+    """
+    nodeId: ID!
+  ): MetricDefinition
+
+  """Reads and enables pagination through a set of `MetricDefinition`."""
+  metricDefinitions(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MetricDefinitionCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricDefinitionFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `MetricDefinition`."""
+    orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MetricDefinitionsConnection
 
   """Fetches an object given its globally unique `ID`."""
   node(
@@ -718,6 +1757,11 @@ type Query implements Node {
     """
     condition: OrganizationCondition
 
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: OrganizationFilter
+
     """Only read the first `n` values of the set."""
     first: Int
 
@@ -739,6 +1783,391 @@ type Query implements Node {
   which can only query top level fields if they are in a particular form.
   """
   query: Query!
+
+  """Reads and enables pagination through a set of `Reading`."""
+  readings(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: ReadingCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: ReadingFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Reading`."""
+    orderBy: [ReadingsOrderBy!] = [NATURAL]
+  ): ReadingsConnection
+}
+
+"""A reading from a device."""
+type Reading {
+  """The readings’s slug."""
+  data: JSON!
+
+  """Reads a single `Device` that is related to this `Reading`."""
+  device: Device
+
+  """The reading’s associated device."""
+  deviceId: Int!
+
+  """The reading’s name."""
+  label: String!
+
+  """The readings’s metadata."""
+  metadata: JSON
+
+  """The time of the reading."""
+  time: Datetime!
+}
+
+"""
+A condition to be used against `Reading` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input ReadingCondition {
+  """Checks for equality with the object’s `data` field."""
+  data: JSON
+
+  """Checks for equality with the object’s `deviceId` field."""
+  deviceId: Int
+
+  """Checks for equality with the object’s `label` field."""
+  label: String
+
+  """Checks for equality with the object’s `metadata` field."""
+  metadata: JSON
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+}
+
+"""
+A filter to be used against `Reading` object types. All fields are combined with a logical ‘and.’
+"""
+input ReadingFilter {
+  """Checks for all expressions in this list."""
+  and: [ReadingFilter!]
+
+  """Filter by the object’s `data` field."""
+  data: JSONFilter
+
+  """Filter by the object’s `deviceId` field."""
+  deviceId: IntFilter
+
+  """Filter by the object’s `label` field."""
+  label: StringFilter
+
+  """Filter by the object’s `metadata` field."""
+  metadata: JSONFilter
+
+  """Negates the expression."""
+  not: ReadingFilter
+
+  """Checks for any expressions in this list."""
+  or: [ReadingFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+}
+
+"""An input for mutations affecting `Reading`"""
+input ReadingInput {
+  """The readings’s slug."""
+  data: JSON!
+
+  """The reading’s associated device."""
+  deviceId: Int!
+
+  """The reading’s name."""
+  label: String!
+
+  """The readings’s metadata."""
+  metadata: JSON
+
+  """The time of the reading."""
+  time: Datetime!
+}
+
+"""A connection to a list of `Reading` values."""
+type ReadingsConnection {
+  """
+  A list of edges which contains the `Reading` and cursor to aid in pagination.
+  """
+  edges: [ReadingsEdge!]!
+
+  """A list of `Reading` objects."""
+  nodes: [Reading!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Reading` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Reading` edge in the connection."""
+type ReadingsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Reading` at the end of the edge."""
+  node: Reading!
+}
+
+"""Methods to use when ordering `Reading`."""
+enum ReadingsOrderBy {
+  DATA_ASC
+  DATA_DESC
+  DEVICE_ID_ASC
+  DEVICE_ID_DESC
+  LABEL_ASC
+  LABEL_DESC
+  METADATA_ASC
+  METADATA_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+}
+
+type Series {
+  avg: Float
+  count: Int
+  first: Float
+  last: Float
+  max: Float
+  min: Float
+  sum: Float
+  time: String
+}
+
+"""
+A filter to be used against String fields. All fields are combined with a logical ‘and.’
+"""
+input StringFilter {
+  """
+  Not equal to the specified value, treating null like an ordinary value.
+  """
+  distinctFrom: String
+
+  """
+  Not equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  distinctFromInsensitive: String
+
+  """Ends with the specified string (case-sensitive)."""
+  endsWith: String
+
+  """Ends with the specified string (case-insensitive)."""
+  endsWithInsensitive: String
+
+  """Equal to the specified value."""
+  equalTo: String
+
+  """Equal to the specified value (case-insensitive)."""
+  equalToInsensitive: String
+
+  """Greater than the specified value."""
+  greaterThan: String
+
+  """Greater than the specified value (case-insensitive)."""
+  greaterThanInsensitive: String
+
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: String
+
+  """Greater than or equal to the specified value (case-insensitive)."""
+  greaterThanOrEqualToInsensitive: String
+
+  """Included in the specified list."""
+  in: [String!]
+
+  """Included in the specified list (case-insensitive)."""
+  inInsensitive: [String!]
+
+  """Contains the specified string (case-sensitive)."""
+  includes: String
+
+  """Contains the specified string (case-insensitive)."""
+  includesInsensitive: String
+
+  """
+  Is null (if `true` is specified) or is not null (if `false` is specified).
+  """
+  isNull: Boolean
+
+  """Less than the specified value."""
+  lessThan: String
+
+  """Less than the specified value (case-insensitive)."""
+  lessThanInsensitive: String
+
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: String
+
+  """Less than or equal to the specified value (case-insensitive)."""
+  lessThanOrEqualToInsensitive: String
+
+  """
+  Matches the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  like: String
+
+  """
+  Matches the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  likeInsensitive: String
+
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: String
+
+  """
+  Equal to the specified value, treating null like an ordinary value (case-insensitive).
+  """
+  notDistinctFromInsensitive: String
+
+  """Does not end with the specified string (case-sensitive)."""
+  notEndsWith: String
+
+  """Does not end with the specified string (case-insensitive)."""
+  notEndsWithInsensitive: String
+
+  """Not equal to the specified value."""
+  notEqualTo: String
+
+  """Not equal to the specified value (case-insensitive)."""
+  notEqualToInsensitive: String
+
+  """Not included in the specified list."""
+  notIn: [String!]
+
+  """Not included in the specified list (case-insensitive)."""
+  notInInsensitive: [String!]
+
+  """Does not contain the specified string (case-sensitive)."""
+  notIncludes: String
+
+  """Does not contain the specified string (case-insensitive)."""
+  notIncludesInsensitive: String
+
+  """
+  Does not match the specified pattern (case-sensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLike: String
+
+  """
+  Does not match the specified pattern (case-insensitive). An underscore (_) matches any single character; a percent sign (%) matches any sequence of zero or more characters.
+  """
+  notLikeInsensitive: String
+
+  """Does not start with the specified string (case-sensitive)."""
+  notStartsWith: String
+
+  """Does not start with the specified string (case-insensitive)."""
+  notStartsWithInsensitive: String
+
+  """Starts with the specified string (case-sensitive)."""
+  startsWith: String
+
+  """Starts with the specified string (case-insensitive)."""
+  startsWithInsensitive: String
+}
+
+"""All input for the `updateDeviceByNodeId` mutation."""
+input UpdateDeviceByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `Device` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `Device` being updated.
+  """
+  patch: DevicePatch!
+}
+
+"""All input for the `updateDeviceBySlug` mutation."""
+input UpdateDeviceBySlugInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  An object where the defined keys will be set on the `Device` being updated.
+  """
+  patch: DevicePatch!
+
+  """The device’s description."""
+  slug: String!
+}
+
+"""All input for the `updateDevice` mutation."""
+input UpdateDeviceInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The primary unique identifier for the device."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `Device` being updated.
+  """
+  patch: DevicePatch!
+}
+
+"""The output of our update `Device` mutation."""
+type UpdateDevicePayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `Device` that was updated by this mutation."""
+  device: Device
+
+  """An edge for our `Device`. May be used by Relay 1."""
+  deviceEdge(
+    """The method to use when ordering `Device`."""
+    orderBy: [DevicesOrderBy!] = [PRIMARY_KEY_ASC]
+  ): DevicesEdge
+
+  """Reads a single `Facility` that is related to this `Device`."""
+  facility: Facility
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
 }
 
 """All input for the `updateFacilityByNodeId` mutation."""
@@ -813,6 +2242,82 @@ type UpdateFacilityPayload {
 
   """Reads a single `Organization` that is related to this `Facility`."""
   organization: Organization
+
+  """
+  Our root query field type. Allows us to run any query from our mutation payload.
+  """
+  query: Query
+}
+
+"""All input for the `updateMetricDefinitionByName` mutation."""
+input UpdateMetricDefinitionByNameInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The metric’s name."""
+  name: String!
+
+  """
+  An object where the defined keys will be set on the `MetricDefinition` being updated.
+  """
+  patch: MetricDefinitionPatch!
+}
+
+"""All input for the `updateMetricDefinitionByNodeId` mutation."""
+input UpdateMetricDefinitionByNodeIdInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """
+  The globally unique `ID` which will identify a single `MetricDefinition` to be updated.
+  """
+  nodeId: ID!
+
+  """
+  An object where the defined keys will be set on the `MetricDefinition` being updated.
+  """
+  patch: MetricDefinitionPatch!
+}
+
+"""All input for the `updateMetricDefinition` mutation."""
+input UpdateMetricDefinitionInput {
+  """
+  An arbitrary string value with no semantic meaning. Will be included in the
+  payload verbatim. May be used to track mutations by the client.
+  """
+  clientMutationId: String
+
+  """The id of the metric definition."""
+  id: Int!
+
+  """
+  An object where the defined keys will be set on the `MetricDefinition` being updated.
+  """
+  patch: MetricDefinitionPatch!
+}
+
+"""The output of our update `MetricDefinition` mutation."""
+type UpdateMetricDefinitionPayload {
+  """
+  The exact same `clientMutationId` that was provided in the mutation input,
+  unchanged and unused. May be used by a client to track mutations.
+  """
+  clientMutationId: String
+
+  """The `MetricDefinition` that was updated by this mutation."""
+  metricDefinition: MetricDefinition
+
+  """An edge for our `MetricDefinition`. May be used by Relay 1."""
+  metricDefinitionEdge(
+    """The method to use when ordering `MetricDefinition`."""
+    orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
+  ): MetricDefinitionsEdge
 
   """
   Our root query field type. Allows us to run any query from our mutation payload.

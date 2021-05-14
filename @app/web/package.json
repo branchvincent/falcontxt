@@ -40,7 +40,18 @@
     "@types/react-router-dom": "^5.1.7"
   },
   "eslintConfig": {
-    "extends": "react-app"
+    "extends": "react-app",
+    "env": {
+      "node": true,
+      "es2021": true
+    },
+    "plugins": [
+      "simple-import-sort"
+    ],
+    "rules": {
+      "simple-import-sort/imports": "error",
+      "simple-import-sort/exports": "error"
+    }
   },
   "browserslist": {
     "production": [

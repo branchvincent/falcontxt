@@ -1,5 +1,6 @@
+import { Card, Col, Empty,Row, Skeleton } from 'antd';
 import { FC } from 'react';
-import { Card, Col, Row, Skeleton, Empty } from 'antd';
+
 import { useGetOrganizationsQuery } from '../queries/types/organizations';
 
 const OrganizationList : FC = () => {

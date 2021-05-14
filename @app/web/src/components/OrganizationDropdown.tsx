@@ -1,10 +1,11 @@
-import { FC } from 'react';
 import { Button, Dropdown, Menu, Spin } from 'antd';
+import { FC } from 'react';
+
+import { useOrganizationContext } from '../components/OrganizationContext';
 import { useGetOrganizationsQuery } from '../queries/types/organizations';
-import useOrganizationContext from '../hooks/useOrganizationContext';
 
 const OrganizationDropdown : FC = () => {
-  const { currentOrganization, loading: contextLoading } = useOrganizationContext();
+  const { current } = useOrganizationContext();
   const { changeOrganization } = useOrganizationContext();
   const { data, loading } = useGetOrganizationsQuery();
 
@@ -16,14 +17,12 @@ const OrganizationDropdown : FC = () => {
         </Menu.Item>
       )}
     </Menu>
-  )
-
-  const current = currentOrganization ? currentOrganization.name : 'Select Organization';
+  );
 
   return (
-    <Dropdown overlay={organizations} arrow={false} trigger={['click']} disabled={loading || contextLoading}>
+    <Dropdown overlay={organizations} arrow={false} trigger={['click']} disabled={loading}>
       <Button block={true}>
-        { loading || contextLoading ? <Spin />  : current }
+        { loading ? <Spin />  : current?.name || 'Select Organization' }
       </Button>
     </Dropdown>
   )

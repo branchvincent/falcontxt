@@ -1,21 +1,16 @@
-import { FC, useEffect } from 'react';
-import { Card, Col, Row, Skeleton, Empty } from 'antd';
-import { useGetFacilitiesByOrganizationLazyQuery } from '../queries/types/facilities';
-import useOrganizationContext from '../hooks/useOrganizationContext';
+import { Card, Col, Empty,Row, Skeleton } from 'antd';
+import { FC } from 'react';
+
+import { useOrganizationContext } from '../components/OrganizationContext';
+import { useGetFacilitiesByOrganizationQuery } from '../queries/types/facilities';
 
 const FacilityList : FC = () => {
-  const { currentOrganization, loading: contextLoading } = useOrganizationContext(); 
-  const [getFacilities, {data, loading}] = useGetFacilitiesByOrganizationLazyQuery();
-
-  useEffect(() => {
-    if (currentOrganization) {
-      getFacilities({ variables: { slug: currentOrganization.slug }})
-    }
-  }, [currentOrganization, getFacilities]);
+  const { current } = useOrganizationContext(); 
+  const {data, loading} = useGetFacilitiesByOrganizationQuery({ variables: { slug: current!.slug}});
 
   return (
     <div>
-      { loading || contextLoading ? <Skeleton active={true} className="nio-skeleton"/> : null }
+      { loading ? <Skeleton active={true} className="nio-skeleton"/> : null }
       { !data?.organizationBySlug?.facilities?.nodes.length ? <Empty /> : null}
       <Row gutter={16}>
           {

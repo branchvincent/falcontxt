@@ -1,9 +1,9 @@
+import { HomeOutlined,LineChartOutlined } from '@ant-design/icons';
 import { ComponentType, ReactNode } from 'react';
 import { RouteComponentProps } from 'react-router-dom';
-import { LineChartOutlined, HomeOutlined } from '@ant-design/icons';
 
-import Metrics from './pages/Metrics';
 import FacilityList from './pages/Facilities';
+import Metrics from './pages/Metrics';
 
 export interface RouteDefinition  {
   path: string;
@@ -28,5 +28,7 @@ const routes : RouteDefinition[] = [
     icon: <LineChartOutlined />
   }
 ];
+
+export const getDefaultRoute = () => routes.find((route) => route.default)!;
 
 export default routes;

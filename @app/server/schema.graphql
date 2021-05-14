@@ -791,7 +791,6 @@ type Facility implements Node {
 
   """The primary unique identifier for the facility."""
   id: Int!
-  metric(end: String, name: String!, start: String): [Metric]
 
   """The facility’s name."""
   name: String!
@@ -1016,12 +1015,6 @@ input JSONFilter {
 
   """Not included in the specified list."""
   notIn: [JSON!]
-}
-
-type Metric {
-  data: Float
-  label: String
-  time: String
 }
 
 """The definition of a metric."""

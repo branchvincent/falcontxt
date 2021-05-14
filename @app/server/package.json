@@ -15,6 +15,7 @@
     "graphile-migrate": "^1.0.2",
     "graphile-utils": "^4.11.2",
     "graphql": "^14.7.0",
+    "node-sql-parser": "^3.3.0",
     "pg": "^8.6.0",
     "postgraphile": "^4.11.0",
     "postgraphile-plugin-connection-filter": "^2.2.1"

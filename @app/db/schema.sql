@@ -101,6 +101,22 @@ COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
 --
+-- Name: metric; Type: TYPE; Schema: app_public; Owner: -
+--
+
+CREATE TYPE app_public.metric AS (
+	"time" timestamp with time zone,
+	count double precision,
+	first double precision,
+	last double precision,
+	avg double precision,
+	sum double precision,
+	min double precision,
+	max double precision
+);
+
+
+--
 -- Name: slugify(text); Type: FUNCTION; Schema: app_private; Owner: -
 --
 
@@ -145,6 +161,261 @@ $$;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: readings; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.readings (
+    "time" timestamp with time zone NOT NULL,
+    device_id integer NOT NULL,
+    label character varying NOT NULL,
+    data jsonb NOT NULL,
+    metadata jsonb DEFAULT '{}'::jsonb
+);
+
+
+--
+-- Name: TABLE readings; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.readings IS 'A reading from a device.';
+
+
+--
+-- Name: COLUMN readings."time"; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.readings."time" IS 'The time of the reading.';
+
+
+--
+-- Name: COLUMN readings.device_id; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.readings.device_id IS 'The reading’s associated device.';
+
+
+--
+-- Name: COLUMN readings.label; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.readings.label IS 'The reading’s name.';
+
+
+--
+-- Name: COLUMN readings.data; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.readings.data IS 'The readings’s slug.';
+
+
+--
+-- Name: COLUMN readings.metadata; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.readings.metadata IS 'The readings’s metadata.';
+
+
+--
+-- Name: _hyper_1_10_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_10_chunk (
+    CONSTRAINT constraint_10 CHECK ((("time" >= '2021-03-04 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-03-11 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_11_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_11_chunk (
+    CONSTRAINT constraint_11 CHECK ((("time" >= '2021-03-11 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-03-18 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_12_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_12_chunk (
+    CONSTRAINT constraint_12 CHECK ((("time" >= '2021-03-18 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-03-25 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_13_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_13_chunk (
+    CONSTRAINT constraint_13 CHECK ((("time" >= '2021-03-25 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-04-01 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_14_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_14_chunk (
+    CONSTRAINT constraint_14 CHECK ((("time" >= '2021-04-01 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-04-08 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_15_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_15_chunk (
+    CONSTRAINT constraint_15 CHECK ((("time" >= '2021-04-08 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-04-15 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_16_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_16_chunk (
+    CONSTRAINT constraint_16 CHECK ((("time" >= '2021-04-15 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-04-22 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_17_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_17_chunk (
+    CONSTRAINT constraint_17 CHECK ((("time" >= '2021-04-22 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-04-29 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_18_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_18_chunk (
+    CONSTRAINT constraint_18 CHECK ((("time" >= '2021-04-29 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-05-06 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_19_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_19_chunk (
+    CONSTRAINT constraint_19 CHECK ((("time" >= '2021-05-06 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-05-13 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_1_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_1_chunk (
+    CONSTRAINT constraint_1 CHECK ((("time" >= '2020-12-31 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-01-07 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_20_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_20_chunk (
+    CONSTRAINT constraint_20 CHECK ((("time" >= '2021-05-13 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-05-20 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_2_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_2_chunk (
+    CONSTRAINT constraint_2 CHECK ((("time" >= '2021-01-07 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-01-14 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_3_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_3_chunk (
+    CONSTRAINT constraint_3 CHECK ((("time" >= '2021-01-14 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-01-21 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_4_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_4_chunk (
+    CONSTRAINT constraint_4 CHECK ((("time" >= '2021-01-21 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-01-28 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_5_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_5_chunk (
+    CONSTRAINT constraint_5 CHECK ((("time" >= '2021-01-28 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-02-04 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_6_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_6_chunk (
+    CONSTRAINT constraint_6 CHECK ((("time" >= '2021-02-04 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-02-11 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_7_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_7_chunk (
+    CONSTRAINT constraint_7 CHECK ((("time" >= '2021-02-11 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-02-18 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_8_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_8_chunk (
+    CONSTRAINT constraint_8 CHECK ((("time" >= '2021-02-18 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-02-25 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
+
+--
+-- Name: _hyper_1_9_chunk; Type: TABLE; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE TABLE _timescaledb_internal._hyper_1_9_chunk (
+    CONSTRAINT constraint_9 CHECK ((("time" >= '2021-02-25 00:00:00+00'::timestamp with time zone) AND ("time" < '2021-03-04 00:00:00+00'::timestamp with time zone)))
+)
+INHERITS (app_public.readings);
+
 
 --
 -- Name: devices; Type: TABLE; Schema: app_public; Owner: -
@@ -454,58 +725,143 @@ ALTER SEQUENCE app_public.organizations_id_seq OWNED BY app_public.organizations
 
 
 --
--- Name: readings; Type: TABLE; Schema: app_public; Owner: -
+-- Name: _hyper_1_10_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
 --
 
-CREATE TABLE app_public.readings (
-    "time" timestamp with time zone NOT NULL,
-    device_id integer NOT NULL,
-    label character varying NOT NULL,
-    data jsonb NOT NULL,
-    metadata jsonb DEFAULT '{}'::jsonb
-);
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_10_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
 
 
 --
--- Name: TABLE readings; Type: COMMENT; Schema: app_public; Owner: -
+-- Name: _hyper_1_11_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
 --
 
-COMMENT ON TABLE app_public.readings IS 'A reading from a device.';
-
-
---
--- Name: COLUMN readings."time"; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.readings."time" IS 'The time of the reading.';
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_11_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
 
 
 --
--- Name: COLUMN readings.device_id; Type: COMMENT; Schema: app_public; Owner: -
+-- Name: _hyper_1_12_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
 --
 
-COMMENT ON COLUMN app_public.readings.device_id IS 'The reading’s associated device.';
-
-
---
--- Name: COLUMN readings.label; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.readings.label IS 'The reading’s name.';
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_12_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
 
 
 --
--- Name: COLUMN readings.data; Type: COMMENT; Schema: app_public; Owner: -
+-- Name: _hyper_1_13_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
 --
 
-COMMENT ON COLUMN app_public.readings.data IS 'The readings’s slug.';
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_13_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
 
 
 --
--- Name: COLUMN readings.metadata; Type: COMMENT; Schema: app_public; Owner: -
+-- Name: _hyper_1_14_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
 --
 
-COMMENT ON COLUMN app_public.readings.metadata IS 'The readings’s metadata.';
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_14_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_15_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_15_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_16_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_16_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_17_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_17_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_18_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_18_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_19_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_19_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_1_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_20_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_20_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_2_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_2_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_3_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_3_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_4_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_4_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_5_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_5_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_6_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_6_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_7_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_7_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_8_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_8_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
+
+
+--
+-- Name: _hyper_1_9_chunk metadata; Type: DEFAULT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_9_chunk ALTER COLUMN metadata SET DEFAULT '{}'::jsonb;
 
 
 --
@@ -601,6 +957,706 @@ ALTER TABLE ONLY app_public.organizations
 
 
 --
+-- Name: _hyper_1_10_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_10_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_10_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_10_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_10_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_10_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_10_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_10_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_10_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_10_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_10_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_10_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_10_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_10_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_10_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_11_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_11_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_11_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_11_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_11_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_11_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_11_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_11_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_11_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_11_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_11_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_11_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_11_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_11_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_11_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_12_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_12_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_12_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_12_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_12_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_12_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_12_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_12_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_12_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_12_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_12_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_12_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_12_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_12_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_12_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_13_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_13_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_13_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_13_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_13_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_13_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_13_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_13_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_13_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_13_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_13_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_13_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_13_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_13_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_13_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_14_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_14_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_14_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_14_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_14_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_14_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_14_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_14_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_14_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_14_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_14_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_14_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_14_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_14_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_14_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_15_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_15_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_15_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_15_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_15_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_15_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_15_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_15_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_15_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_15_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_15_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_15_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_15_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_15_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_15_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_16_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_16_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_16_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_16_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_16_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_16_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_16_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_16_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_16_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_16_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_16_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_16_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_16_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_16_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_16_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_17_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_17_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_17_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_17_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_17_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_17_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_17_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_17_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_17_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_17_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_17_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_17_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_17_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_17_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_17_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_18_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_18_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_18_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_18_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_18_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_18_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_18_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_18_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_18_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_18_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_18_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_18_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_18_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_18_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_18_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_19_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_19_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_19_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_19_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_19_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_19_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_19_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_19_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_19_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_19_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_19_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_19_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_19_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_19_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_19_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_1_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_1_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_1_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_1_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_1_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_1_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_1_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_1_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_1_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_1_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_1_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_1_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_20_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_20_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_20_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_20_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_20_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_20_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_20_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_20_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_20_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_20_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_20_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_20_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_20_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_20_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_20_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_2_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_2_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_2_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_2_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_2_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_2_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_2_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_2_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_2_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_2_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_2_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_2_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_2_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_2_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_2_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_3_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_3_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_3_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_3_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_3_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_3_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_3_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_3_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_3_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_3_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_3_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_3_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_3_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_3_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_3_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_4_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_4_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_4_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_4_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_4_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_4_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_4_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_4_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_4_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_4_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_4_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_4_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_4_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_4_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_4_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_5_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_5_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_5_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_5_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_5_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_5_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_5_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_5_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_5_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_5_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_5_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_5_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_5_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_5_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_5_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_6_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_6_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_6_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_6_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_6_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_6_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_6_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_6_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_6_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_6_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_6_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_6_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_6_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_6_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_6_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_7_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_7_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_7_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_7_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_7_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_7_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_7_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_7_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_7_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_7_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_7_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_7_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_7_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_7_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_7_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_8_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_8_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_8_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_8_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_8_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_8_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_8_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_8_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_8_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_8_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_8_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_8_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_8_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_8_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_8_chunk USING btree ("time" DESC);
+
+
+--
+-- Name: _hyper_1_9_chunk_readings_data_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_9_chunk_readings_data_idx ON _timescaledb_internal._hyper_1_9_chunk USING gin (data);
+
+
+--
+-- Name: _hyper_1_9_chunk_readings_device_label_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE UNIQUE INDEX _hyper_1_9_chunk_readings_device_label_time_idx ON _timescaledb_internal._hyper_1_9_chunk USING btree (device_id, label, "time" DESC);
+
+
+--
+-- Name: _hyper_1_9_chunk_readings_device_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_9_chunk_readings_device_time_idx ON _timescaledb_internal._hyper_1_9_chunk USING btree (device_id, "time" DESC);
+
+
+--
+-- Name: _hyper_1_9_chunk_readings_metadata_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_9_chunk_readings_metadata_idx ON _timescaledb_internal._hyper_1_9_chunk USING gin (metadata);
+
+
+--
+-- Name: _hyper_1_9_chunk_readings_time_idx; Type: INDEX; Schema: _timescaledb_internal; Owner: -
+--
+
+CREATE INDEX _hyper_1_9_chunk_readings_time_idx ON _timescaledb_internal._hyper_1_9_chunk USING btree ("time" DESC);
+
+
+--
 -- Name: readings_data_idx; Type: INDEX; Schema: app_public; Owner: -
 --
 
@@ -685,6 +1741,166 @@ CREATE TRIGGER ts_insert_blocker BEFORE INSERT ON app_public.readings FOR EACH R
 
 
 --
+-- Name: _hyper_1_10_chunk 10_10_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_10_chunk
+    ADD CONSTRAINT "10_10_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_11_chunk 11_11_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_11_chunk
+    ADD CONSTRAINT "11_11_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_12_chunk 12_12_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_12_chunk
+    ADD CONSTRAINT "12_12_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_13_chunk 13_13_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_13_chunk
+    ADD CONSTRAINT "13_13_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_14_chunk 14_14_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_14_chunk
+    ADD CONSTRAINT "14_14_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_15_chunk 15_15_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_15_chunk
+    ADD CONSTRAINT "15_15_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_16_chunk 16_16_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_16_chunk
+    ADD CONSTRAINT "16_16_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_17_chunk 17_17_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_17_chunk
+    ADD CONSTRAINT "17_17_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_18_chunk 18_18_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_18_chunk
+    ADD CONSTRAINT "18_18_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_19_chunk 19_19_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_19_chunk
+    ADD CONSTRAINT "19_19_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_1_chunk 1_1_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_1_chunk
+    ADD CONSTRAINT "1_1_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_20_chunk 20_20_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_20_chunk
+    ADD CONSTRAINT "20_20_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_2_chunk 2_2_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_2_chunk
+    ADD CONSTRAINT "2_2_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_3_chunk 3_3_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_3_chunk
+    ADD CONSTRAINT "3_3_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_4_chunk 4_4_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_4_chunk
+    ADD CONSTRAINT "4_4_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_5_chunk 5_5_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_5_chunk
+    ADD CONSTRAINT "5_5_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_6_chunk 6_6_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_6_chunk
+    ADD CONSTRAINT "6_6_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_7_chunk 7_7_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_7_chunk
+    ADD CONSTRAINT "7_7_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_8_chunk 8_8_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_8_chunk
+    ADD CONSTRAINT "8_8_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
+-- Name: _hyper_1_9_chunk 9_9_readings_device_id_fkey; Type: FK CONSTRAINT; Schema: _timescaledb_internal; Owner: -
+--
+
+ALTER TABLE ONLY _timescaledb_internal._hyper_1_9_chunk
+    ADD CONSTRAINT "9_9_readings_device_id_fkey" FOREIGN KEY (device_id) REFERENCES app_public.devices(id);
+
+
+--
 -- Name: devices devices_facility_id_fkey; Type: FK CONSTRAINT; Schema: app_public; Owner: -
 --
 
@@ -727,7 +1943,7 @@ GRANT USAGE ON SCHEMA app_hidden TO visitor;
 -- Name: SCHEMA app_public; Type: ACL; Schema: -; Owner: -
 --
 
-GRANT USAGE ON SCHEMA app_public TO visitor;
+GRANT ALL ON SCHEMA app_public TO visitor;
 
 
 --
@@ -749,6 +1965,153 @@ REVOKE ALL ON FUNCTION app_private.tg__slugify_name() FROM PUBLIC;
 --
 
 REVOKE ALL ON FUNCTION app_private.tg__timestamps() FROM PUBLIC;
+
+
+--
+-- Name: TABLE readings; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.readings TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_10_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_10_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_11_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_11_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_12_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_12_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_13_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_13_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_14_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_14_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_15_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_15_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_16_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_16_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_17_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_17_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_18_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_18_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_19_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_19_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_1_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_1_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_20_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_20_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_2_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_2_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_3_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_3_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_4_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_4_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_5_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_5_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_6_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_6_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_7_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_7_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_8_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_8_chunk TO visitor;
+
+
+--
+-- Name: TABLE _hyper_1_9_chunk; Type: ACL; Schema: _timescaledb_internal; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE _timescaledb_internal._hyper_1_9_chunk TO visitor;
 
 
 --
@@ -805,13 +2168,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.organizations TO visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.organizations_id_seq TO visitor;
-
-
---
--- Name: TABLE readings; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.readings TO visitor;
 
 
 --

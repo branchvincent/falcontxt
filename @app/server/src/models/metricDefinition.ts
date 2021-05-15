@@ -1,6 +1,9 @@
 import { Parser } from 'node-sql-parser'
 import { ClientBase } from 'pg'
 
+import { InvalidExpressionError } from '../errors'
+import metricDefinition from '../graphql/resolvers/metricDefinition'
+
 type MetricDefinition = {
   name: string
   query: string
@@ -9,39 +12,170 @@ type MetricDefinition = {
 type ColumnConfig = {
   type: 'RAW' | 'METRIC'
   value: string
+  alias: string
 }
 
-// const getFields = (expr: string): string[] => {
-//   const reg = /\("(?<field>[a-zA-Z-_]+)"\)/g
-//   const results: string[] = []
-//   let match
-//   while ((match = reg.exec(expr)) !== null) {
-//     results.push(match?.groups?.field as string)
-//   }
-//   return results
-// }
+const parser = new Parser()
+const allowedTableNames = new Set(['raw', 'null'])
 
-const extractColumns = (query: string): ColumnConfig[] => {
-  const parser = new Parser()
-  console.log(parser.columnList(`SELECT ${query}`))
-  return parser.columnList(`SELECT ${query}`).map((c) => {
-    const match = c.match(/select::(?<table>.*)::(?<column>.*)/)
-    if (!match || !match.groups || !match.groups.column) {
-      throw new Error(`Invalid query: ${query}`)
-    }
+const extractUniqueColumns = (query: string): ColumnConfig[] => {
+  const aliasSet = new Set()
+  const columnSet = new Set()
+  try {
+    return parser
+      .columnList(`SELECT ${query}`)
+      .reduce<ColumnConfig[]>((acc, c) => {
+        const match = c.match(/select::(?<table>.*)::(?<column>.*)/)
+        if (!match || !match.groups || !match.groups.column) {
+          throw new Error(`Invalid query: ${query}`)
+        }
 
-    const type = match.groups?.table === 'raw' ? 'RAW' : 'METRIC';
-    return {
-      type,
-      value: match.groups.column,
-    }
-  })
+        const { column, table } = match.groups
+
+        if (columnSet.has(column)) {
+          return acc
+        }
+
+        if (table && !allowedTableNames.has(table)) {
+          throw new InvalidExpressionError(
+            `Invalid column expression: ${table}.${column}`,
+          )
+        }
+
+        const type = table === 'raw' ? 'RAW' : 'METRIC'
+        const firstChar = column.charAt(0)
+        let index = 1
+        while (aliasSet.has(`${firstChar}${index}`)) {
+          index++
+        }
+
+        columnSet.add(column)
+        const colConfig: ColumnConfig = {
+          type,
+          value: column,
+          alias: `${firstChar}${index}`,
+        }
+
+        return [...acc, colConfig]
+      }, [])
+  } catch (e) {
+    throw new InvalidExpressionError(e.message)
+  }
 }
 
-const replaceColumns = (query: string, cols: ColumnConfig[]) => {
-  return cols.reduce((query, c, idx) => {
-    return query.replace(`(${c.value})`, `(r${idx + 1}.data::float)`)
-  }, query)
+const generateViewQuery = (name: string, query: string) => {
+  const cols = extractUniqueColumns(query)
+  if (!cols.length) {
+    throw new InvalidExpressionError(
+      'At least one parseable metric name must be provided.',
+    )
+  }
+
+  const resultingQuery = cols.reduce((query, c) => {
+    return query
+      .split(`(${c.type === 'RAW' ? 'raw.' : ''}${c.value})`)
+      .join(`(${c.alias}.value::float)`)
+  }, query.toLowerCase())
+
+  const createRawStatement = (column: ColumnConfig) => `
+    ${column.value} as (
+      SELECT
+        time_bucket (interval '1 minute', time) AS time,
+        d.facility_id,
+        r.label,
+        avg(r.data::float) AS value
+      FROM
+          app_public.readings r
+          JOIN app_public.devices d ON r.device_id = d.id
+      WHERE
+          r.label = '${column.value}'
+          AND d.facility_id = 1
+      GROUP BY 1,2,3
+    )
+  `
+
+  const createAliasStatment = (column: ColumnConfig) =>
+    `${column.type !== 'RAW' ? 'app_public.' : ''}${column.value} ${
+      column.alias
+    }`
+
+  const rawStatements = cols
+    .filter((col) => col.type === 'RAW')
+    .map(createRawStatement)
+
+  const aliasStatements = cols
+    .map(createAliasStatment)
+    .reduce((acc, statement) => {
+      let newStatement = statement
+      if (acc.length) {
+        newStatement = `JOIN ${newStatement} USING (time, facility_id)`
+      }
+
+      return `${acc}\n${newStatement}`
+    }, '')
+
+  return `
+    CREATE OR REPLACE VIEW app_public.${name} as ${
+    rawStatements
+      ? `
+      WITH ${rawStatements.join(', ')}
+    `
+      : ''
+  }
+    SELECT
+      time_bucket (interval '1 minute', time) AS time,
+      ${cols[0].alias}.facility_id,
+      ${resultingQuery} as value
+    FROM
+      ${aliasStatements}
+    GROUP BY 1,2;
+  `
+}
+
+const generateMetricFunctions = (name: string): string[] => [
+  `
+  create or replace function app_public.facilities_${name}(
+    facility app_public.facilities,
+    "from" timestamptz,
+    "to" timestamptz default now(),
+    "interval" interval default '1 hour'
+  ) returns setof app_public.metric as $$
+    select
+        time_bucket(interval, time) as time,
+        count(*),
+        first(value, time),
+        last(value, time),
+        avg(value) as avg,
+        sum(value) as sum,
+        min(value) as min,
+        max(value) as max
+    from app_public.${name}
+    where facility_id = facility.id
+    group by 1
+  $$ language sql immutable strict;
+`,
+]
+
+function camelize(str: string): string {
+  return str
+    .replace(/(?:^\w|[A-Z]|\b\w)/g, function (word, index) {
+      return index === 0 ? word.toLowerCase() : word.toUpperCase()
+    })
+    .replace(/\s+/g, '')
+}
+
+const camelToSnakeCase = (str: string): string =>
+  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
+
+export const fixMetricDefinitionArgs = (metricDefinition: {
+  [key: string]: any
+}): { [key: string]: any } => {
+  const { query, name, ...rest } = metricDefinition
+  return {
+    query: query.toLowerCase(),
+    name: camelize(name),
+    ...rest,
+  }
 }
 
 export const configureMetricDefinition = async (
@@ -49,52 +183,12 @@ export const configureMetricDefinition = async (
   pgClient: ClientBase,
 ): Promise<void> => {
   const { name, query } = metricDefinition
-  const cols = extractColumns(query)
-  const col = replaceColumns(query, cols)
-  await pgClient.query(`drop view if exists app_public.${name}`)
-  await pgClient.query(`
-        create or replace view app_public.${name} as
-        select
-            time_bucket(interval '1 minute', time) AS time,
-            facility_id,
-            '${name}' AS label,
-            ${col} AS value
-        FROM
-          app_public.readings r1
-          ${[...Array(cols.length - 1).keys()]
-            .map(
-              (i) =>
-                `JOIN app_public.readings r${i + 2} USING (time, device_id)`,
-            )
-            .join('\n')}
-          JOIN app_public.devices d ON r1.device_id = d.id
-        WHERE
-          r1.label = '${cols[0]}'
-          ${[...Array(cols.length - 1).keys()]
-            .map((i) => `AND r${i + 2}.label = '${cols[i + 1]}'`)
-            .join('\n')}
-        GROUP BY 1, 2;
-      `)
-  await pgClient.query(
-    `create or replace function app_public.facilities_${name}(
-            facility app_public.facilities,
-            "from" timestamptz,
-            "to" timestamptz default now(),
-            "interval" interval default '1 hour'
-        ) returns setof app_public.metric as $$
-            select
-                time_bucket(interval, time) as time,
-                count(*),
-                first(value, time),
-                last(value, time),
-                avg(value) as avg,
-                sum(value) as sum,
-                min(value) as min,
-                max(value) as avg
-            from app_public.${name}
-            where facility_id = facility.id
-            group by 1
-        $$ language sql immutable strict;
-        `,
+  const snakeCaseName = camelToSnakeCase(name)
+  await pgClient.query(`drop view if exists app_public.${snakeCaseName}`)
+  await pgClient.query(generateViewQuery(snakeCaseName, query))
+  await Promise.all(
+    generateMetricFunctions(snakeCaseName).map((query) =>
+      pgClient.query(query),
+    ),
   )
 }

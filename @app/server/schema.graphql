@@ -896,6 +896,35 @@ type Facility implements Node {
     to: Datetime
   ): MetricsConnection!
 
+  """Reads and enables pagination through a set of `Metric`."""
+  testMetric(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
   """The time this facility was updated."""
   updatedAt: Datetime
 }
@@ -2116,6 +2145,40 @@ type Query implements Node {
     orderBy: [Test3sOrderBy!] = [NATURAL]
   ): Test3sConnection
 
+  """Reads and enables pagination through a set of `TestMetric`."""
+  testMetrics(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TestMetricCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TestMetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `TestMetric`."""
+    orderBy: [TestMetricsOrderBy!] = [NATURAL]
+  ): TestMetricsConnection
+
   """Reads and enables pagination through a set of `Test`."""
   tests(
     """Read all values in the set after (below) this cursor."""
@@ -2644,6 +2707,87 @@ input TestFilter {
 
   """Filter by the object’s `value` field."""
   value: FloatFilter
+}
+
+type TestMetric {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `TestMetric` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TestMetricCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `TestMetric` object types. All fields are combined with a logical ‘and.’
+"""
+input TestMetricFilter {
+  """Checks for all expressions in this list."""
+  and: [TestMetricFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: TestMetricFilter
+
+  """Checks for any expressions in this list."""
+  or: [TestMetricFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `TestMetric` values."""
+type TestMetricsConnection {
+  """
+  A list of edges which contains the `TestMetric` and cursor to aid in pagination.
+  """
+  edges: [TestMetricsEdge!]!
+
+  """A list of `TestMetric` objects."""
+  nodes: [TestMetric!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `TestMetric` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `TestMetric` edge in the connection."""
+type TestMetricsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TestMetric` at the end of the edge."""
+  node: TestMetric!
+}
+
+"""Methods to use when ordering `TestMetric`."""
+enum TestMetricsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """A connection to a list of `Test` values."""

@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
--- Dumped by pg_dump version 13.3
+-- Dumped by pg_dump version 13.2
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -595,7 +595,8 @@ ALTER SEQUENCE app_public.facilities_id_seq OWNED BY app_public.facilities.id;
 CREATE TABLE app_public.metric_definitions (
     id integer NOT NULL,
     name character varying NOT NULL,
-    query character varying NOT NULL
+    query character varying NOT NULL,
+    description text
 );
 
 
@@ -625,6 +626,13 @@ COMMENT ON COLUMN app_public.metric_definitions.name IS 'The metric’s name.';
 --
 
 COMMENT ON COLUMN app_public.metric_definitions.query IS 'The metric’s definition.';
+
+
+--
+-- Name: COLUMN metric_definitions.description; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.metric_definitions.description IS 'The description of the metric definition.';
 
 
 --

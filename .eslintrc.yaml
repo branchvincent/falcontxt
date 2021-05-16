@@ -11,3 +11,11 @@ plugins: [simple-import-sort]
 rules:
   simple-import-sort/imports: error
   simple-import-sort/exports: error
+  no-empty-function: off
+  no-non-null-assertion: off
+  react/prop-types: off
+  no-explicit-any: off
+  react/react-in-jsx-scope: off
+  "@typescript-eslint/no-empty-function": off
+  "@typescript-eslint/no-non-null-assertion": off
+  "@typescript-eslint/no-explicit-any": off

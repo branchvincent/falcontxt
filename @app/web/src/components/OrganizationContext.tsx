@@ -1,101 +1,118 @@
-import './OrganizationContext.scss';
+import './OrganizationContext.scss'
 
-import { Spin } from 'antd';
-import { createContext, FC, useCallback, useContext, useEffect, useState } from 'react';
-import { useHistory,useLocation } from 'react-router-dom';
+import { Spin } from 'antd'
+import {
+  createContext,
+  FC,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from 'react'
+import { useHistory, useLocation } from 'react-router-dom'
 
-import { useGetOrganizationLazyQuery } from '../queries/types/organizations';
-import { getDefaultRoute } from '../routes';
+import { useGetOrganizationLazyQuery } from '../queries/types/organizations'
+import { getDefaultRoute } from '../routes'
 
 type OrganizationContextProps = {
-  loading: boolean;
-  hasOrganization: boolean;
+  loading: boolean
+  hasOrganization: boolean
   current?: {
-    slug: string;
-    name: string;
-  } | null;
-  changeOrganization: (slug: string) => void;
+    slug: string
+    name: string
+  } | null
+  changeOrganization: (slug: string) => void
 }
 
-const initialContext : OrganizationContextProps = {
+const initialContext: OrganizationContextProps = {
   loading: false,
   hasOrganization: false,
-  changeOrganization: (slug: string) => {}
-};
+  changeOrganization: () => {},
+}
 
-const OrganizationContext = createContext(initialContext);
+const OrganizationContext = createContext(initialContext)
 
-const slugMatch = /\/t\/(?<slug>[a-zA-Z-_]+)\/?/;
+const slugMatch = /\/t\/(?<slug>[a-zA-Z-_]+)\/?/
 
 const useInternalOrganizationContext = () => {
-  const [fetchOrganization, { data, loading }] = useGetOrganizationLazyQuery();
-  const [currentOrganization, setCurrentOrganization] = useState<string | undefined>();
-  const location = useLocation();
-  const history = useHistory();
+  const [fetchOrganization, { data, loading }] = useGetOrganizationLazyQuery()
+  const [currentOrganization, setCurrentOrganization] =
+    useState<string | undefined>()
+  const location = useLocation()
+  const history = useHistory()
 
   useEffect(() => {
-    const matches = location.pathname.match(slugMatch);
-    if (matches) {
-      setCurrentOrganization(matches.groups!.slug);
+    const matches = location.pathname.match(slugMatch)
+    if (matches && matches.groups) {
+      setCurrentOrganization(matches.groups.slug)
     }
-  }, [location]);
+  }, [location])
 
   useEffect(() => {
     if (currentOrganization) {
-      fetchOrganization({ variables: { slug: currentOrganization }});
+      fetchOrganization({ variables: { slug: currentOrganization } })
     }
-  }, [currentOrganization, fetchOrganization]);
+  }, [currentOrganization, fetchOrganization])
 
   useEffect(() => {
     if (loading) {
-      return;
+      return
     }
 
     if (data?.organizationBySlug === null) {
-      return history.push('/');
+      return history.push('/')
     }
-  }, [data, loading, history]);
+  }, [data, loading, history])
 
-  const changeOrganization = useCallback((slug) => {
-    const matches = location.pathname.match(slugMatch);
-    if (matches) {
-      const { slug: existingSlug } = matches.groups!;
-      if (existingSlug === currentOrganization) {
-        return;
+  const changeOrganization = useCallback(
+    (slug) => {
+      const matches = location.pathname.match(slugMatch)
+      if (matches && matches.groups) {
+        const { slug: existingSlug } = matches.groups
+        if (existingSlug === currentOrganization) {
+          return
+        }
+
+        return history.push(
+          location.pathname.replace(
+            `/t/${existingSlug}`,
+            `/t/${currentOrganization}`,
+          ),
+        )
       }
 
-      return history.push(location.pathname.replace(`/t/${existingSlug}`, `/t/${currentOrganization}`))
-    }
-
-    const defaultRoute = getDefaultRoute();
-    return history.push(`/t/${slug}${defaultRoute!.path}`);
-  }, [currentOrganization, history, location]);
+      const defaultRoute = getDefaultRoute()
+      return history.push(`/t/${slug}${defaultRoute.path}`)
+    },
+    [currentOrganization, history, location],
+  )
 
   return {
     loading,
     hasOrganization: slugMatch.test(location.pathname),
     current: data && data.organizationBySlug,
-    changeOrganization
+    changeOrganization,
   }
-};
+}
 
-const SyncOrganizationContext : FC = ({ children }) => {
-  const context = useInternalOrganizationContext();
-  const { hasOrganization, current } = context;
-  
+const SyncOrganizationContext: FC = ({ children }) => {
+  const context = useInternalOrganizationContext()
+  const { hasOrganization, current } = context
+
   return (
     <OrganizationContext.Provider value={context}>
-      {
-        hasOrganization && !current ? (
-          <div className="loading-spin">
-            <Spin size="large" />
-          </div>
-         ) : children
-      }
+      {hasOrganization && !current ? (
+        <div className="loading-spin">
+          <Spin size="large" />
+        </div>
+      ) : (
+        children
+      )}
     </OrganizationContext.Provider>
   )
-};
+}
 
-export const useOrganizationContext: () => OrganizationContextProps = () => useContext(OrganizationContext);
+export const useOrganizationContext: () => OrganizationContextProps = () =>
+  useContext(OrganizationContext)
 
-export default SyncOrganizationContext;
+export default SyncOrganizationContext

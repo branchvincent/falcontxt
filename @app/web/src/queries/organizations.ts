@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from '@apollo/client'
 
 export const GetOrganizations = gql`
   query getOrganizations {
@@ -13,7 +13,7 @@ export const GetOrganizations = gql`
       }
     }
   }
-`;
+`
 
 export const GetOrganization = gql`
   query getOrganization($slug: String!) {
@@ -22,4 +22,4 @@ export const GetOrganization = gql`
       name
     }
   }
-`;
+`

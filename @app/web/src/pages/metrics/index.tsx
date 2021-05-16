@@ -1,9 +1,10 @@
 import { Line } from '@ant-design/charts'
 import { DatePicker, Spin } from 'antd'
 import { FC } from 'react'
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
-import { useGetMetricsByTimeLazyQuery } from '../queries/types/metrics'
+import PageHeader from '../../components/PageHeader'
+import { useGetMetricsByTimeLazyQuery } from '../../queries/types/metrics'
 
 const { RangePicker } = DatePicker
 
@@ -22,6 +23,7 @@ const Metrics: FC = () => {
   if (loading) return <Spin />
   return (
     <div>
+      <PageHeader title="Metrics" subTitle="View insights through metrics" />
       <RangePicker
         picker="week"
         onChange={(dates, dateStrings) => {

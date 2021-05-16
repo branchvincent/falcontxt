@@ -2,7 +2,6 @@ import { Parser } from 'node-sql-parser'
 import { ClientBase } from 'pg'
 
 import { InvalidExpressionError } from '../errors'
-import metricDefinition from '../graphql/resolvers/metricDefinition'
 
 type MetricDefinition = {
   name: string

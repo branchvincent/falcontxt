@@ -6,16 +6,13 @@ import React, { FC, useEffect, useState } from 'react'
 import PageHeader from '../../components/PageHeader'
 import { useGetMetricDefinitionsQuery } from '../../queries/types/metricDefinitions'
 import { useGetFacilityMetricsLazyQuery } from '../../queries/types/metrics'
-import { capitalize } from '../../utils/format'
+import { camelToSnakeCase, capitalize } from '../../utils/format'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
 const { Text } = Typography
 
 const initialRange = { from: moment().subtract(1, 'months'), to: moment() }
-
-const camelToSnakeCase = (str: string): string =>
-  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
 
 const Metrics: FC = () => {
   const [metric, setMetric] = useState<string>()

@@ -3,6 +3,7 @@ import { FC, useCallback, useState } from 'react'
 
 import PageHeader from '../../components/PageHeader'
 import { MetricDefinition } from '../../graphql'
+import { useGetDistinctTagsQuery } from '../../queries/types/facilities'
 import { useGetMetricDefinitionsQuery } from '../../queries/types/metricDefinitions'
 import MetricRankTable from './MetricRankTable'
 
@@ -12,6 +13,7 @@ const tags = ['test1', 'test2', 'test3']
 
 const Overview: FC = () => {
   const [activeTags, setActiveTags] = useState<Set<string>>(new Set())
+  const { data: distinctTags, loading: tagsLoading } = useGetDistinctTagsQuery()
   const { data: metricDefitions, loading: metricDefinitionsLoading } =
     useGetMetricDefinitionsQuery()
   const appendOrRemoveTag = useCallback(
@@ -32,18 +34,18 @@ const Overview: FC = () => {
       <PageHeader title="Overview" subTitle="View metrics across facilities" />
       <div>
         <b style={{ marginRight: '10px' }}>Tags: </b>
-        {tags.map((tag) => (
+        {distinctTags?.facilityDistinctTags?.map((tag) => (
           <CheckableTag
             key={tag}
-            checked={activeTags.has(tag)}
-            onChange={(checked) => appendOrRemoveTag(tag, checked)}
+            checked={activeTags.has(tag!)}
+            onChange={(checked) => appendOrRemoveTag(tag!, checked)}
           >
             {tag}
           </CheckableTag>
         ))}
       </div>
       <Divider />
-      {metricDefinitionsLoading ? (
+      {tagsLoading || metricDefinitionsLoading ? (
         <Skeleton active={true} className="nio-skeleton" />
       ) : null}
       {!metricDefinitionsLoading &&
@@ -56,6 +58,7 @@ const Overview: FC = () => {
             <Col span={12} key={metricDefinition.id}>
               <MetricRankTable
                 metricDefinition={metricDefinition as MetricDefinition}
+                tags={Array.from(activeTags)}
               />
             </Col>
           ))}

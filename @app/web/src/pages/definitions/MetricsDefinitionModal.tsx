@@ -52,7 +52,7 @@ const MetricsDefinitionModal: FC<MetricsDefinitionModalProps> = ({
                   ({ id }) =>
                     id === data.updateMetricDefinition?.metricDefinition?.id,
                 )
-                if (found) {
+                if (typeof found !== 'undefined') {
                   result?.metricDefinitions?.nodes.splice(
                     found,
                     1,

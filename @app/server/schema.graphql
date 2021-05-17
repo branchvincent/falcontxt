@@ -836,12 +836,99 @@ type Facility implements Node {
   """The facility’s associated organization."""
   organizationId: Int!
 
+  """Reads and enables pagination through a set of `Metric`."""
+  rate(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
   """The facility’s slug."""
   slug: String!
+
+  """Reads and enables pagination through a set of `Metric`."""
+  spend(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
   tags: [String]
 
   """The time this facility was updated."""
   updatedAt: Datetime
+
+  """Reads and enables pagination through a set of `Metric`."""
+  usage(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
 }
 
 """
@@ -1952,6 +2039,7 @@ type Query implements Node {
     nodeId: ID!
   ): Facility
   facilityBySlug(slug: String!): Facility
+  facilityDistinctTags: [String]
 
   """Reads and enables pagination through a set of `FacilityRanking`."""
   facilityRankings(
@@ -2087,6 +2175,40 @@ type Query implements Node {
   """
   query: Query!
 
+  """Reads and enables pagination through a set of `Rate`."""
+  rates(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RateCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RateFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Rate`."""
+    orderBy: [RatesOrderBy!] = [NATURAL]
+  ): RatesConnection
+
   """Reads and enables pagination through a set of `Reading`."""
   readings(
     """Read all values in the set after (below) this cursor."""
@@ -2120,6 +2242,154 @@ type Query implements Node {
     """The method to use when ordering `Reading`."""
     orderBy: [ReadingsOrderBy!] = [NATURAL]
   ): ReadingsConnection
+
+  """Reads and enables pagination through a set of `Spend`."""
+  spends(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: SpendCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: SpendFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Spend`."""
+    orderBy: [SpendsOrderBy!] = [NATURAL]
+  ): SpendsConnection
+
+  """Reads and enables pagination through a set of `Usage`."""
+  usages(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: UsageCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: UsageFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Usage`."""
+    orderBy: [UsagesOrderBy!] = [NATURAL]
+  ): UsagesConnection
+}
+
+type Rate {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Rate` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input RateCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Rate` object types. All fields are combined with a logical ‘and.’
+"""
+input RateFilter {
+  """Checks for all expressions in this list."""
+  and: [RateFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: RateFilter
+
+  """Checks for any expressions in this list."""
+  or: [RateFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Rate` values."""
+type RatesConnection {
+  """
+  A list of edges which contains the `Rate` and cursor to aid in pagination.
+  """
+  edges: [RatesEdge!]!
+
+  """A list of `Rate` objects."""
+  nodes: [Rate!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Rate` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Rate` edge in the connection."""
+type RatesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Rate` at the end of the edge."""
+  node: Rate!
+}
+
+"""Methods to use when ordering `Rate`."""
+enum RatesOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """A reading from a device."""
@@ -2249,6 +2519,86 @@ enum ReadingsOrderBy {
   NATURAL
   TIME_ASC
   TIME_DESC
+}
+
+type Spend {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Spend` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input SpendCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Spend` object types. All fields are combined with a logical ‘and.’
+"""
+input SpendFilter {
+  """Checks for all expressions in this list."""
+  and: [SpendFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: SpendFilter
+
+  """Checks for any expressions in this list."""
+  or: [SpendFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Spend` values."""
+type SpendsConnection {
+  """
+  A list of edges which contains the `Spend` and cursor to aid in pagination.
+  """
+  edges: [SpendsEdge!]!
+
+  """A list of `Spend` objects."""
+  nodes: [Spend!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Spend` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Spend` edge in the connection."""
+type SpendsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Spend` at the end of the edge."""
+  node: Spend!
+}
+
+"""Methods to use when ordering `Spend`."""
+enum SpendsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """
@@ -2760,4 +3110,84 @@ type UpdateOrganizationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+type Usage {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Usage` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input UsageCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Usage` object types. All fields are combined with a logical ‘and.’
+"""
+input UsageFilter {
+  """Checks for all expressions in this list."""
+  and: [UsageFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: UsageFilter
+
+  """Checks for any expressions in this list."""
+  or: [UsageFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Usage` values."""
+type UsagesConnection {
+  """
+  A list of edges which contains the `Usage` and cursor to aid in pagination.
+  """
+  edges: [UsagesEdge!]!
+
+  """A list of `Usage` objects."""
+  nodes: [Usage!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Usage` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Usage` edge in the connection."""
+type UsagesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Usage` at the end of the edge."""
+  node: Usage!
+}
+
+"""Methods to use when ordering `Usage`."""
+enum UsagesOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }

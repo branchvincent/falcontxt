@@ -1,4 +1,13 @@
-import { Button, Card, Col, Descriptions, Empty, Row, Skeleton } from 'antd'
+import {
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Empty,
+  Row,
+  Skeleton,
+  Tag,
+} from 'antd'
 import { FC, useState } from 'react'
 
 import { useOrganizationContext } from '../../components/OrganizationContext'
@@ -33,7 +42,7 @@ const FacilityList: FC = () => {
       />
       {loading ? <Skeleton active={true} className="nio-skeleton" /> : null}
       {!data?.organizationBySlug?.facilities?.nodes.length ? <Empty /> : null}
-      <Row gutter={16}>
+      <Row gutter={[16, 16]}>
         {data?.organizationBySlug?.facilities?.nodes.map((facility) => (
           <Col span={8} key={facility.slug}>
             <Card
@@ -50,6 +59,11 @@ const FacilityList: FC = () => {
                   {facility.slug}
                 </Descriptions.Item>
               </Descriptions>
+              <>
+                {facility.tags?.map((tag) => (
+                  <Tag key={tag}>{tag}</Tag>
+                ))}
+              </>
             </Card>
           </Col>
         ))}

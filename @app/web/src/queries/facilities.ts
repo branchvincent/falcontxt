@@ -8,6 +8,7 @@ export const GetFacilitiesByOrganization = gql`
           id
           slug
           name
+          tags
         }
       }
     }
@@ -21,6 +22,7 @@ export const CreateFacility = gql`
         id
         name
         slug
+        tags
       }
     }
   }
@@ -33,7 +35,14 @@ export const UpdateFacility = gql`
         id
         name
         slug
+        tags
       }
     }
+  }
+`
+
+export const GetDistinctTags = gql`
+  query getDistinctTags {
+    facilityDistinctTags
   }
 `

@@ -3,17 +3,30 @@ import { Table, Tag, Tooltip, Typography } from 'antd'
 import { FC } from 'react'
 
 import { MetricDefinition } from '../../graphql'
-import { capitalize } from '../../utils/format'
+import { useGetFacilityRankingsQuery } from '../../queries/types/overview'
+import { camelToSnakeCase, capitalize } from '../../utils/format'
 
 const { Text } = Typography
 
 type MetricRankTableProps = {
   metricDefinition: MetricDefinition
+  tags: string[]
 }
 
-const MetricRankTable: FC<MetricRankTableProps> = ({ metricDefinition }) => {
+const MetricRankTable: FC<MetricRankTableProps> = ({
+  metricDefinition,
+  tags,
+}) => {
+  const { data, loading } = useGetFacilityRankingsQuery({
+    variables: {
+      metric: camelToSnakeCase(metricDefinition.name),
+      tags,
+    },
+  })
+
   return (
     <Table
+      loading={loading}
       bordered
       size="small"
       pagination={false}
@@ -33,11 +46,15 @@ const MetricRankTable: FC<MetricRankTableProps> = ({ metricDefinition }) => {
           title: 'Rank',
           dataIndex: 'rank',
           key: 'rank',
+          width: 20,
+          align: 'center',
         },
         {
           title: 'Facility',
-          dataIndex: 'facility',
+          dataIndex: 'slug',
           key: 'facility',
+          align: 'center',
+          sorter: (a, b) => a.slug!.localeCompare(b.slug),
         },
         {
           title: `Value${
@@ -45,6 +62,11 @@ const MetricRankTable: FC<MetricRankTableProps> = ({ metricDefinition }) => {
           }`,
           dataIndex: 'value',
           key: 'value',
+          render: (value: number) =>
+            Math.round((value + Number.EPSILON) * 100) / 100,
+          align: 'right',
+          sorter: (a, b) => a.value! - b.value!,
+          defaultSortOrder: 'descend',
         },
         {
           title: 'Tags',
@@ -59,22 +81,12 @@ const MetricRankTable: FC<MetricRankTableProps> = ({ metricDefinition }) => {
           ),
         },
       ]}
-      dataSource={[
-        {
-          rank: '1',
-          key: '1',
-          facility: 'Test1',
-          value: 32,
-          tags: ['test1'],
-        },
-        {
-          rank: '2',
-          key: '2',
-          facility: 'Test2',
-          value: 32,
-          tags: ['test2'],
-        },
-      ]}
+      dataSource={
+        data?.facilityRankings?.nodes.map(({ facility, ...rest }) => ({
+          slug: facility!.slug,
+          ...rest,
+        })) || []
+      }
     ></Table>
   )
 }

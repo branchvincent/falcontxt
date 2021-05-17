@@ -1,5 +1,5 @@
 import { cloneDeep } from '@apollo/client/utilities'
-import { Alert, Button, Form, Input, Modal } from 'antd'
+import { Alert, Button, Form, Input, Modal, Select } from 'antd'
 import { GraphQLError } from 'graphql'
 import { FC, useCallback, useState } from 'react'
 
@@ -50,7 +50,7 @@ const FacilityModal: FC<FacilityModalProps> = ({ facility, onComplete }) => {
                   result?.organizationBySlug?.facilities?.nodes.findIndex(
                     ({ id }) => id === data.updateFacility?.facility?.id,
                   )
-                if (found) {
+                if (typeof found !== 'undefined') {
                   result?.organizationBySlug?.facilities?.nodes.splice(
                     found,
                     1,
@@ -167,6 +167,13 @@ const FacilityModal: FC<FacilityModalProps> = ({ facility, onComplete }) => {
           rules={[{ required: true }]}
         >
           <Input />
+        </Form.Item>
+        <Form.Item name="tags" required label="Tags">
+          <Select
+            mode="tags"
+            style={{ width: '100%' }}
+            placeholder="Tags Mode"
+          />
         </Form.Item>
       </Form>
     </Modal>

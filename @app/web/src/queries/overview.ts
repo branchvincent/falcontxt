@@ -5,7 +5,7 @@ export const GetFacilityRankings = gql`
     facilityRankings(metric: $metric, tags: $tags) {
       nodes {
         facility {
-          id
+          slug
         }
         rank
         tags

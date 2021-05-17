@@ -11,16 +11,14 @@ import {
 } from 'react'
 import { useHistory, useLocation } from 'react-router-dom'
 
+import { Organization } from '../graphql'
 import { useGetOrganizationLazyQuery } from '../queries/types/organizations'
 import { getDefaultRoute } from '../routes'
 
 type OrganizationContextProps = {
   loading: boolean
   hasOrganization: boolean
-  current?: {
-    slug: string
-    name: string
-  } | null
+  current?: Organization
   changeOrganization: (slug: string) => void
 }
 
@@ -90,7 +88,7 @@ const useInternalOrganizationContext = () => {
   return {
     loading,
     hasOrganization: slugMatch.test(location.pathname),
-    current: data && data.organizationBySlug,
+    current: data && (data.organizationBySlug as Organization),
     changeOrganization,
   }
 }

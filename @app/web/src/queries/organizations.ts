@@ -18,6 +18,7 @@ export const GetOrganizations = gql`
 export const GetOrganization = gql`
   query getOrganization($slug: String!) {
     organizationBySlug(slug: $slug) {
+      id
       slug
       name
     }

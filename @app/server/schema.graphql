@@ -896,6 +896,35 @@ type Facility implements Node {
   ): MetricsConnection!
 
   """Reads and enables pagination through a set of `Metric`."""
+  test10(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
+  """Reads and enables pagination through a set of `Metric`."""
   test2(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
@@ -2282,6 +2311,40 @@ type Query implements Node {
     orderBy: [ReadingsOrderBy!] = [NATURAL]
   ): ReadingsConnection
 
+  """Reads and enables pagination through a set of `Test10`."""
+  test10s(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test10Condition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: Test10Filter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test10`."""
+    orderBy: [Test10sOrderBy!] = [NATURAL]
+  ): Test10sConnection
+
   """Reads and enables pagination through a set of `Test2`."""
   test2s(
     """Read all values in the set after (below) this cursor."""
@@ -2690,6 +2753,86 @@ type Test {
   facilityId: Int
   time: Datetime
   value: Float
+}
+
+type Test10 {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Test10` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input Test10Condition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Test10` object types. All fields are combined with a logical ‘and.’
+"""
+input Test10Filter {
+  """Checks for all expressions in this list."""
+  and: [Test10Filter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: Test10Filter
+
+  """Checks for any expressions in this list."""
+  or: [Test10Filter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Test10` values."""
+type Test10sConnection {
+  """
+  A list of edges which contains the `Test10` and cursor to aid in pagination.
+  """
+  edges: [Test10sEdge!]!
+
+  """A list of `Test10` objects."""
+  nodes: [Test10!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Test10` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Test10` edge in the connection."""
+type Test10sEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test10` at the end of the edge."""
+  node: Test10!
+}
+
+"""Methods to use when ordering `Test10`."""
+enum Test10sOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 type Test2 {

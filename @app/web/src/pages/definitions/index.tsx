@@ -1,4 +1,4 @@
-import { EditOutlined, StockOutlined } from '@ant-design/icons'
+import { StockOutlined } from '@ant-design/icons'
 import {
   Button,
   Card,
@@ -53,7 +53,7 @@ const MetricDefitinions: FC = () => {
           <Col span={8} key={metricDefitinion.name}>
             <Card
               hoverable={true}
-              headStyle={{ backgroundColor: '#c7c7c7' }}
+              headStyle={{ backgroundColor: 'rgb(222 222 222)' }}
               onClick={() => setActiveDefinition(metricDefitinion)}
               title={
                 <Space>

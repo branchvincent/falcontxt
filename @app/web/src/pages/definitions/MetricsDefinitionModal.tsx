@@ -72,11 +72,6 @@ const MetricsDefinitionModal: FC<MetricsDefinitionModalProps> = ({
             variables: {
               metricDefinition: values as MetricDefinitionInput,
             },
-            refetchQueries: [
-              {
-                query: GetMetricDefinitionsDocument,
-              },
-            ],
             update: (proxy, { data }) => {
               if (data?.createMetricDefinition?.metricDefinition) {
                 const result = cloneDeep(
@@ -153,7 +148,7 @@ const MetricsDefinitionModal: FC<MetricsDefinitionModalProps> = ({
           label="Name"
           rules={[{ required: true }]}
         >
-          <Input />
+          <Input disabled={isUpdate} />
         </Form.Item>
         <Form.Item name="description" label="Description">
           <Input />

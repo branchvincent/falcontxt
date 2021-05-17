@@ -100,76 +100,6 @@ CREATE EXTENSION IF NOT EXISTS pgcrypto WITH SCHEMA public;
 COMMENT ON EXTENSION pgcrypto IS 'cryptographic functions';
 
 
---
--- Name: facility_ranking; Type: TYPE; Schema: app_public; Owner: -
---
-
-CREATE TYPE app_public.facility_ranking AS (
-	rank integer,
-	id integer,
-	value double precision,
-	tags text[]
-);
-
-
---
--- Name: metric; Type: TYPE; Schema: app_public; Owner: -
---
-
-CREATE TYPE app_public.metric AS (
-	"time" timestamp with time zone,
-	count double precision,
-	first double precision,
-	last double precision,
-	avg double precision,
-	sum double precision,
-	min double precision,
-	max double precision
-);
-
-
---
--- Name: slugify(text); Type: FUNCTION; Schema: app_private; Owner: -
---
-
-CREATE FUNCTION app_private.slugify(value text) RETURNS text
-    LANGUAGE sql IMMUTABLE STRICT
-    AS $$
-    select trim(both '-' from regexp_replace(lower(trim(value)), '[^a-z0-9\\-_]+', '-', 'gi'))
-$$;
-
-
---
--- Name: tg__slugify_name(); Type: FUNCTION; Schema: app_private; Owner: -
---
-
-CREATE FUNCTION app_private.tg__slugify_name() RETURNS trigger
-    LANGUAGE plpgsql
-    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
-    AS $$
-begin
-    NEW.slug := app_private.slugify(NEW.name);
-    RETURN NEW;
-end;
-$$;
-
-
---
--- Name: tg__timestamps(); Type: FUNCTION; Schema: app_private; Owner: -
---
-
-CREATE FUNCTION app_private.tg__timestamps() RETURNS trigger
-    LANGUAGE plpgsql
-    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
-    AS $$
-begin
-    NEW.created_at = (case when TG_OP = 'INSERT' then now() else OLD.created_at end);
-    NEW.updated_at = (case when TG_OP = 'UPDATE' and OLD.updated_at >= now() then OLD.updated_at + interval '1 millisecond' else NOW() end);
-    return NEW;
-end;
-$$;
-
-
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
@@ -241,6 +171,76 @@ COMMENT ON COLUMN app_public.facilities.updated_at IS 'The time this facility wa
 
 
 --
+-- Name: facility_ranking; Type: TYPE; Schema: app_public; Owner: -
+--
+
+CREATE TYPE app_public.facility_ranking AS (
+	rank integer,
+	facility app_public.facilities,
+	value double precision,
+	tags text[]
+);
+
+
+--
+-- Name: metric; Type: TYPE; Schema: app_public; Owner: -
+--
+
+CREATE TYPE app_public.metric AS (
+	"time" timestamp with time zone,
+	count double precision,
+	first double precision,
+	last double precision,
+	avg double precision,
+	sum double precision,
+	min double precision,
+	max double precision
+);
+
+
+--
+-- Name: slugify(text); Type: FUNCTION; Schema: app_private; Owner: -
+--
+
+CREATE FUNCTION app_private.slugify(value text) RETURNS text
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $$
+    select trim(both '-' from regexp_replace(lower(trim(value)), '[^a-z0-9\\-_]+', '-', 'gi'))
+$$;
+
+
+--
+-- Name: tg__slugify_name(); Type: FUNCTION; Schema: app_private; Owner: -
+--
+
+CREATE FUNCTION app_private.tg__slugify_name() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+begin
+    NEW.slug := app_private.slugify(NEW.name);
+    RETURN NEW;
+end;
+$$;
+
+
+--
+-- Name: tg__timestamps(); Type: FUNCTION; Schema: app_private; Owner: -
+--
+
+CREATE FUNCTION app_private.tg__timestamps() RETURNS trigger
+    LANGUAGE plpgsql
+    SET search_path TO 'pg_catalog', 'public', 'pg_temp'
+    AS $$
+begin
+    NEW.created_at = (case when TG_OP = 'INSERT' then now() else OLD.created_at end);
+    NEW.updated_at = (case when TG_OP = 'UPDATE' and OLD.updated_at >= now() then OLD.updated_at + interval '1 millisecond' else NOW() end);
+    return NEW;
+end;
+$$;
+
+
+--
 -- Name: facilities_metrics(app_public.facilities, text, interval); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -273,7 +273,7 @@ CREATE FUNCTION app_public.facility_rankings(metric text, tags text[] DEFAULT '{
     return query execute format('
     select
         (row_number() over (order by sum(m.value) desc))::int as rank,
-        f.id,
+        f,
         sum(m.value) as value,
         f.tags
     from
@@ -282,7 +282,7 @@ CREATE FUNCTION app_public.facility_rankings(metric text, tags text[] DEFAULT '{
     where
         f.tags @> %L
         and m.time >= now() - interval %L
-    group by 2
+    group by f.id
     order by value desc', metric, tags, interval);
 end $$;
 
@@ -5203,6 +5203,13 @@ GRANT ALL ON SCHEMA app_public TO visitor;
 
 
 --
+-- Name: TABLE facilities; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.facilities TO visitor;
+
+
+--
 -- Name: FUNCTION slugify(value text); Type: ACL; Schema: app_private; Owner: -
 --
 
@@ -5221,13 +5228,6 @@ REVOKE ALL ON FUNCTION app_private.tg__slugify_name() FROM PUBLIC;
 --
 
 REVOKE ALL ON FUNCTION app_private.tg__timestamps() FROM PUBLIC;
-
-
---
--- Name: TABLE facilities; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.facilities TO visitor;
 
 
 --

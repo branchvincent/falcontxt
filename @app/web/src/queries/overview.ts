@@ -4,7 +4,9 @@ export const GetFacilityRankings = gql`
   query getFacilityRankings($metric: String!, $tags: [String]) {
     facilityRankings(metric: $metric, tags: $tags) {
       nodes {
-        id
+        facility {
+          id
+        }
         rank
         tags
         value

@@ -820,6 +820,35 @@ type Facility implements Node {
     offset: Int
   ): MetricsConnection!
 
+  """Reads and enables pagination through a set of `Metric`."""
+  myTest(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
   """The facility’s name."""
   name: String!
 
@@ -836,6 +865,122 @@ type Facility implements Node {
 
   """The facility’s slug."""
   slug: String!
+
+  """Reads and enables pagination through a set of `Metric`."""
+  test(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
+  """Reads and enables pagination through a set of `Metric`."""
+  test2(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
+  """Reads and enables pagination through a set of `Metric`."""
+  test3(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
+  """Reads and enables pagination through a set of `Metric`."""
+  testTest(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
 
   """The time this facility was updated."""
   updatedAt: Datetime
@@ -1586,6 +1731,86 @@ type Mutation {
   ): UpdateOrganizationPayload
 }
 
+type MyTest {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `MyTest` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input MyTestCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `MyTest` object types. All fields are combined with a logical ‘and.’
+"""
+input MyTestFilter {
+  """Checks for all expressions in this list."""
+  and: [MyTestFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: MyTestFilter
+
+  """Checks for any expressions in this list."""
+  or: [MyTestFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `MyTest` values."""
+type MyTestsConnection {
+  """
+  A list of edges which contains the `MyTest` and cursor to aid in pagination.
+  """
+  edges: [MyTestsEdge!]!
+
+  """A list of `MyTest` objects."""
+  nodes: [MyTest!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `MyTest` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `MyTest` edge in the connection."""
+type MyTestsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `MyTest` at the end of the edge."""
+  node: MyTest!
+}
+
+"""Methods to use when ordering `MyTest`."""
+enum MyTestsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
+}
+
 """An object with a globally unique `ID`."""
 interface Node {
   """
@@ -1928,6 +2153,40 @@ type Query implements Node {
     orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): MetricDefinitionsConnection
 
+  """Reads and enables pagination through a set of `MyTest`."""
+  myTests(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: MyTestCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MyTestFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `MyTest`."""
+    orderBy: [MyTestsOrderBy!] = [NATURAL]
+  ): MyTestsConnection
+
   """Fetches an object given its globally unique `ID`."""
   node(
     """The globally unique `ID`."""
@@ -2022,6 +2281,142 @@ type Query implements Node {
     """The method to use when ordering `Reading`."""
     orderBy: [ReadingsOrderBy!] = [NATURAL]
   ): ReadingsConnection
+
+  """Reads and enables pagination through a set of `Test2`."""
+  test2s(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test2Condition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: Test2Filter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test2`."""
+    orderBy: [Test2sOrderBy!] = [NATURAL]
+  ): Test2sConnection
+
+  """Reads and enables pagination through a set of `Test3`."""
+  test3s(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: Test3Condition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: Test3Filter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test3`."""
+    orderBy: [Test3sOrderBy!] = [NATURAL]
+  ): Test3sConnection
+
+  """Reads and enables pagination through a set of `Test`."""
+  tests(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TestCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TestFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Test`."""
+    orderBy: [TestsOrderBy!] = [NATURAL]
+  ): TestsConnection
+
+  """Reads and enables pagination through a set of `TestTest`."""
+  testTests(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: TestTestCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: TestTestFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `TestTest`."""
+    orderBy: [TestTestsOrderBy!] = [NATURAL]
+  ): TestTestsConnection
 }
 
 """A reading from a device."""
@@ -2289,6 +2684,327 @@ input StringFilter {
 
   """Starts with the specified string (case-insensitive)."""
   startsWithInsensitive: String
+}
+
+type Test {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+type Test2 {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Test2` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input Test2Condition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Test2` object types. All fields are combined with a logical ‘and.’
+"""
+input Test2Filter {
+  """Checks for all expressions in this list."""
+  and: [Test2Filter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: Test2Filter
+
+  """Checks for any expressions in this list."""
+  or: [Test2Filter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Test2` values."""
+type Test2sConnection {
+  """
+  A list of edges which contains the `Test2` and cursor to aid in pagination.
+  """
+  edges: [Test2sEdge!]!
+
+  """A list of `Test2` objects."""
+  nodes: [Test2!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Test2` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Test2` edge in the connection."""
+type Test2sEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test2` at the end of the edge."""
+  node: Test2!
+}
+
+"""Methods to use when ordering `Test2`."""
+enum Test2sOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
+}
+
+type Test3 {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Test3` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input Test3Condition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Test3` object types. All fields are combined with a logical ‘and.’
+"""
+input Test3Filter {
+  """Checks for all expressions in this list."""
+  and: [Test3Filter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: Test3Filter
+
+  """Checks for any expressions in this list."""
+  or: [Test3Filter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Test3` values."""
+type Test3sConnection {
+  """
+  A list of edges which contains the `Test3` and cursor to aid in pagination.
+  """
+  edges: [Test3sEdge!]!
+
+  """A list of `Test3` objects."""
+  nodes: [Test3!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Test3` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Test3` edge in the connection."""
+type Test3sEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test3` at the end of the edge."""
+  node: Test3!
+}
+
+"""Methods to use when ordering `Test3`."""
+enum Test3sOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
+}
+
+"""
+A condition to be used against `Test` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input TestCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Test` object types. All fields are combined with a logical ‘and.’
+"""
+input TestFilter {
+  """Checks for all expressions in this list."""
+  and: [TestFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: TestFilter
+
+  """Checks for any expressions in this list."""
+  or: [TestFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Test` values."""
+type TestsConnection {
+  """
+  A list of edges which contains the `Test` and cursor to aid in pagination.
+  """
+  edges: [TestsEdge!]!
+
+  """A list of `Test` objects."""
+  nodes: [Test!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Test` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Test` edge in the connection."""
+type TestsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Test` at the end of the edge."""
+  node: Test!
+}
+
+"""Methods to use when ordering `Test`."""
+enum TestsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
+}
+
+type TestTest {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `TestTest` object types. All fields are tested
+for equality and combined with a logical ‘and.’
+"""
+input TestTestCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `TestTest` object types. All fields are combined with a logical ‘and.’
+"""
+input TestTestFilter {
+  """Checks for all expressions in this list."""
+  and: [TestTestFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: TestTestFilter
+
+  """Checks for any expressions in this list."""
+  or: [TestTestFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `TestTest` values."""
+type TestTestsConnection {
+  """
+  A list of edges which contains the `TestTest` and cursor to aid in pagination.
+  """
+  edges: [TestTestsEdge!]!
+
+  """A list of `TestTest` objects."""
+  nodes: [TestTest!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `TestTest` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `TestTest` edge in the connection."""
+type TestTestsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `TestTest` at the end of the edge."""
+  node: TestTest!
+}
+
+"""Methods to use when ordering `TestTest`."""
+enum TestTestsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """All input for the `updateDeviceByNodeId` mutation."""

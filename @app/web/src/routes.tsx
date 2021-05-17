@@ -1,4 +1,5 @@
 import {
+  DashboardOutlined,
   HomeOutlined,
   LineChartOutlined,
   NumberOutlined,
@@ -6,9 +7,10 @@ import {
 import { ComponentType, ReactNode } from 'react'
 import { RouteComponentProps } from 'react-router-dom'
 
-import MetricDefitinions from './pages/definitions'
+import MetricDefinitions from './pages/definitions'
 import FacilityList from './pages/facilities'
 import Metrics from './pages/metrics'
+import Overview from './pages/overview'
 
 export interface RouteDefinition {
   path: string
@@ -20,8 +22,14 @@ export interface RouteDefinition {
 
 const routes: RouteDefinition[] = [
   {
-    path: '/facilities',
+    path: '/overview',
     default: true,
+    name: 'Overview',
+    component: Overview,
+    icon: <DashboardOutlined />,
+  },
+  {
+    path: '/facilities',
     name: 'Facilities',
     component: FacilityList,
     icon: <HomeOutlined />,
@@ -29,7 +37,7 @@ const routes: RouteDefinition[] = [
   {
     path: '/definitions',
     name: 'Metric Definitions',
-    component: MetricDefitinions,
+    component: MetricDefinitions,
     icon: <NumberOutlined />,
   },
   {

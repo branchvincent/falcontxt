@@ -1,18 +1,21 @@
 import { Line } from '@ant-design/charts'
-import { QuestionCircleFilled } from '@ant-design/icons'
-import { Alert, DatePicker, Select, Tooltip } from 'antd'
-import { capitalize } from 'lodash'
+import { Alert, DatePicker, Select, Space, Typography } from 'antd'
 import moment, { Moment } from 'moment'
 import React, { FC, useEffect, useState } from 'react'
 
 import PageHeader from '../../components/PageHeader'
 import { useGetMetricDefinitionsQuery } from '../../queries/types/metricDefinitions'
 import { useGetFacilityMetricsLazyQuery } from '../../queries/types/metrics'
+import { capitalize } from '../../utils/format'
 
 const { RangePicker } = DatePicker
 const { Option } = Select
+const { Text } = Typography
 
 const initialRange = { from: moment().subtract(1, 'months'), to: moment() }
+
+const camelToSnakeCase = (str: string): string =>
+  str.replace(/[A-Z]/g, (letter) => `_${letter.toLowerCase()}`)
 
 const Metrics: FC = () => {
   const [metric, setMetric] = useState<string>()
@@ -23,7 +26,7 @@ const Metrics: FC = () => {
 
   useEffect(() => {
     if (metric && range) {
-      getMetricData({ variables: { ...range, name: metric } })
+      getMetricData({ variables: { ...range, name: camelToSnakeCase(metric) } })
     }
   }, [metric, range, getMetricData])
 
@@ -55,7 +58,7 @@ const Metrics: FC = () => {
       >
         {metrics?.metricDefinitions?.nodes.map(({ name }) => (
           <Option key={name} value={name}>
-            {name}
+            {capitalize(name)}
           </Option>
         ))}
       </Select>
@@ -85,10 +88,10 @@ const Metrics: FC = () => {
               justifyContent: 'center',
             }}
           >
-            {capitalize(currMetric?.name)}
-            <Tooltip title={currMetric?.description}>
-              <QuestionCircleFilled style={{ margin: 5 }} />
-            </Tooltip>
+            <Space direction="vertical" align="center">
+              <Text strong>{capitalize(currMetric!.name)}</Text>
+              <Text type="secondary">{currMetric?.description}</Text>
+            </Space>
           </div>
           <Line
             data={metricData || []}

@@ -1,11 +1,24 @@
-import { EditOutlined } from '@ant-design/icons'
-import { Button, Card, Col, Descriptions, Empty, Row, Skeleton } from 'antd'
+import { EditOutlined, StockOutlined } from '@ant-design/icons'
+import {
+  Button,
+  Card,
+  Col,
+  Descriptions,
+  Empty,
+  Row,
+  Skeleton,
+  Space,
+  Typography,
+} from 'antd'
 import { FC, useState } from 'react'
 
 import PageHeader from '../../components/PageHeader'
 import { MetricDefinition } from '../../graphql'
 import { useGetMetricDefinitionsQuery } from '../../queries/types/metricDefinitions'
+import { capitalize } from '../../utils/format'
 import MetricsDefinitionModal from './MetricsDefinitionModal'
+
+const { Paragraph } = Typography
 
 const MetricDefitinions: FC = () => {
   const [activeDefinition, setActiveDefinition] =
@@ -39,26 +52,42 @@ const MetricDefitinions: FC = () => {
         {data?.metricDefinitions?.nodes.map((metricDefitinion) => (
           <Col span={8} key={metricDefitinion.name}>
             <Card
-              title={metricDefitinion.name}
-              extra={
-                <EditOutlined
-                  onClick={() => setActiveDefinition(metricDefitinion)}
-                />
+              hoverable={true}
+              headStyle={{ backgroundColor: '#c7c7c7' }}
+              onClick={() => setActiveDefinition(metricDefitinion)}
+              title={
+                <Space>
+                  <StockOutlined />
+                  {capitalize(metricDefitinion.name)}
+                </Space>
               }
             >
               <Descriptions layout="horizontal">
-                <Descriptions.Item label="Description">
-                  {metricDefitinion.description}
+                <Descriptions.Item
+                  labelStyle={{ fontWeight: 'bold' }}
+                  label="Description"
+                >
+                  {metricDefitinion?.description || 'None'}
                 </Descriptions.Item>
               </Descriptions>
               <Descriptions layout="horizontal">
-                <Descriptions.Item label="Query">
-                  {metricDefitinion.query}
+                <Descriptions.Item
+                  labelStyle={{ fontWeight: 'bold' }}
+                  label="Units"
+                >
+                  {metricDefitinion?.units || 'None'}
                 </Descriptions.Item>
               </Descriptions>
               <Descriptions layout="horizontal">
-                <Descriptions.Item label="Units">
-                  {metricDefitinion.units}
+                <Descriptions.Item
+                  labelStyle={{ fontWeight: 'bold' }}
+                  label="Query"
+                >
+                  <Paragraph>
+                    <pre style={{ margin: 0, fontSize: '0.8em' }}>
+                      {metricDefitinion.query}
+                    </pre>
+                  </Paragraph>
                 </Descriptions.Item>
               </Descriptions>
             </Card>

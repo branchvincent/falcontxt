@@ -110,8 +110,9 @@ const MetricsDefinitionModal: FC<MetricsDefinitionModalProps> = ({
 
   return (
     <Modal
-      title={isUpdate ? 'Edit Definition:' : 'Create Definition:'}
+      title={isUpdate ? 'Edit Metric Definition' : 'Create Metric Definition'}
       centered
+      closable={false}
       visible={true}
       footer={[
         <Button key="back" onClick={onCancel}>

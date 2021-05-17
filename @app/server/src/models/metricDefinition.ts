@@ -74,7 +74,7 @@ const generateViewQuery = (name: string, query: string) => {
 
   const resultingQuery = cols.reduce((query, c) => {
     return query
-      .split(`(${c.type === 'RAW' ? 'raw.' : ''}${c.value})`)
+      .split(`(${c.type === 'RAW' ? 'raw.' : ''}${c.value.toLowerCase()})`)
       .join(`(${c.alias}.value::float)`)
   }, query.toLowerCase())
 
@@ -95,9 +95,9 @@ const generateViewQuery = (name: string, query: string) => {
   `
 
   const createAliasStatment = (column: ColumnConfig) =>
-    `${column.type !== 'RAW' ? 'app_public.' : ''}${column.value} ${
-      column.alias
-    }`
+    `${column.type !== 'RAW' ? 'app_public.' : ''}${camelToSnakeCase(
+      camelize(column.value),
+    )} ${column.alias}`
 
   const rawStatements = cols
     .filter((col) => col.type === 'RAW')
@@ -161,7 +161,7 @@ export const fixMetricDefinitionArgs = (metricDefinition: {
 }): { [key: string]: any } => {
   const { query, name, ...rest } = metricDefinition
   return {
-    query: query.toLowerCase(),
+    query,
     name: camelize(name),
     ...rest,
   }

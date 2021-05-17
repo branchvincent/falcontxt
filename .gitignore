@@ -1,6 +1,7 @@
 .docker/
 .eslintcache
-@app/client/src/index.ts
+@app/web/src/graphql.tsx
+@app/web/src/queries/types/
 dist/
 node_modules/
 .vscode/

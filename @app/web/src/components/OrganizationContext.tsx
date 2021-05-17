@@ -1,6 +1,6 @@
 import './OrganizationContext.scss'
 
-import { Spin } from 'antd'
+import { Space, Typography } from 'antd'
 import {
   createContext,
   FC,
@@ -14,6 +14,8 @@ import { useHistory, useLocation } from 'react-router-dom'
 import { Organization } from '../graphql'
 import { useGetOrganizationLazyQuery } from '../queries/types/organizations'
 import { getDefaultRoute } from '../routes'
+
+const { Text } = Typography
 
 type OrganizationContextProps = {
   loading: boolean
@@ -95,13 +97,24 @@ const useInternalOrganizationContext = () => {
 
 const SyncOrganizationContext: FC = ({ children }) => {
   const context = useInternalOrganizationContext()
-  const { hasOrganization, current } = context
+  const [fakeLoading, setFakeLoading] = useState(true)
+
+  useEffect(() => {
+    setTimeout(() => {
+      setFakeLoading(false)
+    }, 2000)
+  }, [setFakeLoading])
 
   return (
     <OrganizationContext.Provider value={context}>
-      {hasOrganization && !current ? (
-        <div className="loading-spin">
-          <Spin size="large" />
+      {fakeLoading ? (
+        <div className="loading-spin" onClick={() => setFakeLoading(false)}>
+          <Space direction="vertical" align="center">
+            <img src={`${process.env.PUBLIC_URL}/FalconAirKick.gif`} />
+            <Text strong style={{ fontFamily: 'monospace' }}>
+              falcon.txt loading...
+            </Text>
+          </Space>
         </div>
       ) : (
         children

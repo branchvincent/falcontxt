@@ -1,5 +1,5 @@
 import { ApolloProvider } from '@apollo/client'
-import { Empty, Layout } from 'antd'
+import { Empty, Layout, Spin } from 'antd'
 import { FC } from 'react'
 import {
   BrowserRouter as Router,
@@ -20,18 +20,27 @@ import routes, { getDefaultRoute } from './routes'
 const { Content, Footer } = Layout
 
 const OrganizationRoutes: FC = () => {
+  const { current } = useOrganizationContext()
   const match = useRouteMatch()
   return (
-    <Switch>
-      {routes.map(({ path, component }) => (
-        <Route
-          exact
-          key={path}
-          path={`${match.url}${path}`}
-          component={component}
-        />
-      ))}
-    </Switch>
+    <>
+      {!current ? (
+        <div className="loading-spin">
+          <Spin />
+        </div>
+      ) : (
+        <Switch>
+          {routes.map(({ path, component }) => (
+            <Route
+              exact
+              key={path}
+              path={`${match.url}${path}`}
+              component={component}
+            />
+          ))}
+        </Switch>
+      )}
+    </>
   )
 }
 

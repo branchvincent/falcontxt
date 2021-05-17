@@ -1,11 +1,31 @@
 import { gql } from '@apollo/client'
 
-export const GetMetricsByTime = gql`
-  query getMetricsByTime($from: Datetime!, $to: Datetime!) {
-    readings(filter: { time: { greaterThan: $from, lessThan: $to } }) {
+export const GetMetricsNames = gql`
+  query getMetricsNames {
+    metricDefinitions {
       nodes {
-        time
-        data
+        name
+        description
+        units
+      }
+    }
+  }
+`
+
+export const GetFacilityMetrics = gql`
+  query getFacilityMetrics($name: String!, $from: Datetime!, $to: Datetime!) {
+    facilities {
+      nodes {
+        slug
+        metrics(
+          name: $name
+          filter: { time: { greaterThan: $from, lessThan: $to } }
+        ) {
+          nodes {
+            time
+            avg
+          }
+        }
       }
     }
   }

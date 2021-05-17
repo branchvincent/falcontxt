@@ -27,16 +27,16 @@ const routes: RouteDefinition[] = [
     icon: <HomeOutlined />,
   },
   {
-    path: '/metrics',
-    name: 'Metrics',
-    component: Metrics,
-    icon: <LineChartOutlined />,
-  },
-  {
     path: '/definitions',
     name: 'Metric Definitions',
     component: MetricDefitinions,
     icon: <NumberOutlined />,
+  },
+  {
+    path: '/metrics',
+    name: 'Metrics',
+    component: Metrics,
+    icon: <LineChartOutlined />,
   },
 ]
 

@@ -88,7 +88,6 @@ const generateViewQuery = (name: string, query: string) => {
           JOIN app_public.devices d ON r.device_id = d.id
       WHERE
           r.label = '${column.value}'
-          AND d.facility_id = 1
       GROUP BY 1,2,3
     )
   `
@@ -115,7 +114,7 @@ const generateViewQuery = (name: string, query: string) => {
 
   return `
     CREATE OR REPLACE VIEW app_public.${name} as ${
-    rawStatements
+    rawStatements.length
       ? `
       WITH ${rawStatements.join(', ')}
     `

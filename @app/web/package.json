@@ -8,6 +8,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "generate": "graphql-codegen --config codegen.yaml",
+    "generate:watch": "graphql-codegen --watch",
     "lint": "eslint --fix"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "antd": "^4.15.5",
     "classnames": "^2.3.1",
     "graphql": "^15.5.0",
+    "lodash": "^4.17.21",
     "node-sass": "^6.0.0",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
@@ -36,6 +38,7 @@
     "@testing-library/react": "^11.2.6",
     "@testing-library/user-event": "^12.8.3",
     "@types/jest": "^26.0.23",
+    "@types/lodash": "^4.14.169",
     "@types/node": "^12.20.13",
     "@types/react": "^17.0.5",
     "@types/react-dom": "^17.0.4",

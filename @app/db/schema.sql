@@ -3,7 +3,7 @@
 --
 
 -- Dumped from database version 13.2 (Debian 13.2-1.pgdg100+1)
--- Dumped by pg_dump version 13.2
+-- Dumped by pg_dump version 13.3
 
 SET statement_timeout = 0;
 SET lock_timeout = 0;
@@ -161,6 +161,94 @@ $$;
 SET default_tablespace = '';
 
 SET default_table_access_method = heap;
+
+--
+-- Name: facilities; Type: TABLE; Schema: app_public; Owner: -
+--
+
+CREATE TABLE app_public.facilities (
+    id integer NOT NULL,
+    organization_id integer NOT NULL,
+    name text NOT NULL,
+    slug text NOT NULL,
+    created_at timestamp with time zone DEFAULT now(),
+    updated_at timestamp with time zone DEFAULT now(),
+    CONSTRAINT facilities_name_check CHECK ((char_length(name) < 80)),
+    CONSTRAINT facilities_slug_check CHECK ((slug ~* '^[a-z0-9-]{1,80}$'::text))
+);
+
+
+--
+-- Name: TABLE facilities; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON TABLE app_public.facilities IS 'A facility.';
+
+
+--
+-- Name: COLUMN facilities.id; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.id IS 'The primary unique identifier for the facility.';
+
+
+--
+-- Name: COLUMN facilities.organization_id; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.organization_id IS 'The facility’s associated organization.';
+
+
+--
+-- Name: COLUMN facilities.name; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.name IS 'The facility’s name.';
+
+
+--
+-- Name: COLUMN facilities.slug; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.slug IS 'The facility’s slug.';
+
+
+--
+-- Name: COLUMN facilities.created_at; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.created_at IS 'The time this facility was created.';
+
+
+--
+-- Name: COLUMN facilities.updated_at; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.facilities.updated_at IS 'The time this facility was updated.';
+
+
+--
+-- Name: facilities_metrics(app_public.facilities, text, interval); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.facilities_metrics(facility app_public.facilities, name text, "interval" interval DEFAULT '01:00:00'::interval) RETURNS SETOF app_public.metric
+    LANGUAGE plpgsql STABLE STRICT
+    AS $$ BEGIN
+    return query execute format('
+    select
+        time_bucket(%L, time) as time,
+        count(*)::double precision,
+        first(value, time),
+        last(value, time),
+        avg(value) as avg,
+        sum(value) as sum,
+        min(value) as min,
+        max(value) as max
+    from app_public.%I
+    where facility_id = %s
+    group by 1', interval, name, facility.id);
+  END $$;
+
 
 --
 -- Name: readings; Type: TABLE; Schema: app_public; Owner: -
@@ -504,71 +592,6 @@ ALTER SEQUENCE app_public.devices_id_seq OWNED BY app_public.devices.id;
 
 
 --
--- Name: facilities; Type: TABLE; Schema: app_public; Owner: -
---
-
-CREATE TABLE app_public.facilities (
-    id integer NOT NULL,
-    organization_id integer NOT NULL,
-    name text NOT NULL,
-    slug text NOT NULL,
-    created_at timestamp with time zone DEFAULT now(),
-    updated_at timestamp with time zone DEFAULT now(),
-    CONSTRAINT facilities_name_check CHECK ((char_length(name) < 80)),
-    CONSTRAINT facilities_slug_check CHECK ((slug ~* '^[a-z0-9-]{1,80}$'::text))
-);
-
-
---
--- Name: TABLE facilities; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON TABLE app_public.facilities IS 'A facility.';
-
-
---
--- Name: COLUMN facilities.id; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.id IS 'The primary unique identifier for the facility.';
-
-
---
--- Name: COLUMN facilities.organization_id; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.organization_id IS 'The facility’s associated organization.';
-
-
---
--- Name: COLUMN facilities.name; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.name IS 'The facility’s name.';
-
-
---
--- Name: COLUMN facilities.slug; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.slug IS 'The facility’s slug.';
-
-
---
--- Name: COLUMN facilities.created_at; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.created_at IS 'The time this facility was created.';
-
-
---
--- Name: COLUMN facilities.updated_at; Type: COMMENT; Schema: app_public; Owner: -
---
-
-COMMENT ON COLUMN app_public.facilities.updated_at IS 'The time this facility was updated.';
-
-
---
 -- Name: facilities_id_seq; Type: SEQUENCE; Schema: app_public; Owner: -
 --
 
@@ -596,7 +619,8 @@ CREATE TABLE app_public.metric_definitions (
     id integer NOT NULL,
     name character varying NOT NULL,
     query character varying NOT NULL,
-    description text
+    description text,
+    units text
 );
 
 
@@ -633,6 +657,13 @@ COMMENT ON COLUMN app_public.metric_definitions.query IS 'The metric’s definit
 --
 
 COMMENT ON COLUMN app_public.metric_definitions.description IS 'The description of the metric definition.';
+
+
+--
+-- Name: COLUMN metric_definitions.units; Type: COMMENT; Schema: app_public; Owner: -
+--
+
+COMMENT ON COLUMN app_public.metric_definitions.units IS 'The units of the metric.';
 
 
 --
@@ -1976,6 +2007,21 @@ REVOKE ALL ON FUNCTION app_private.tg__timestamps() FROM PUBLIC;
 
 
 --
+-- Name: TABLE facilities; Type: ACL; Schema: app_public; Owner: -
+--
+
+GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.facilities TO visitor;
+
+
+--
+-- Name: FUNCTION facilities_metrics(facility app_public.facilities, name text, "interval" interval); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.facilities_metrics(facility app_public.facilities, name text, "interval" interval) FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.facilities_metrics(facility app_public.facilities, name text, "interval" interval) TO visitor;
+
+
+--
 -- Name: TABLE readings; Type: ACL; Schema: app_public; Owner: -
 --
 
@@ -2134,13 +2180,6 @@ GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.devices TO visitor;
 --
 
 GRANT SELECT,USAGE ON SEQUENCE app_public.devices_id_seq TO visitor;
-
-
---
--- Name: TABLE facilities; Type: ACL; Schema: app_public; Owner: -
---
-
-GRANT SELECT,INSERT,DELETE,UPDATE ON TABLE app_public.facilities TO visitor;
 
 
 --

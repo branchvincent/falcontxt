@@ -6,7 +6,8 @@
   ],
   "scripts": {
     "prestart": "mkdir -p .docker/ && docker compose up -d && ./scripts/wait-for-containers && npm run -w @app/db reset",
-    "start": "concurrently -n 'db,server,web' -c 'green,blue,magenta' npm:start:db npm:start:server npm:start:web",
+    "start": "concurrently -n 'codegen,db,server,web' -c 'yellow,green,blue,magenta' npm:start:codegen npm:start:db npm:start:server npm:start:web",
+    "start:codegen": "npm run -w @app/web generate:watch",
     "start:db": "npm run -w @app/db start",
     "start:server": "npm run -w @app/server start",
     "start:web": "npm run -w @app/web start",

@@ -9,8 +9,6 @@ import MetricRankTable from './MetricRankTable'
 
 const { CheckableTag } = Tag
 
-const tags = ['test1', 'test2', 'test3']
-
 const Overview: FC = () => {
   const [activeTags, setActiveTags] = useState<Set<string>>(new Set())
   const { data: distinctTags, loading: tagsLoading } = useGetDistinctTagsQuery()

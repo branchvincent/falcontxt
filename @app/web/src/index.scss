@@ -47,3 +47,11 @@ code {
     font-size: 0.9em;
   }
 }
+
+.ant-tag-checkable {
+  border: 1px solid rgb(165, 165, 165);
+
+  &.ant-tag-checkable-checked {
+    border: 1px solid #1890ff;
+  }
+}

@@ -6,6 +6,7 @@ import { FC, useCallback, useState } from 'react'
 import { useOrganizationContext } from '../../components/OrganizationContext'
 import { Facility, FacilityInput, FacilityPatch } from '../../graphql'
 import {
+  GetDistinctTagsDocument,
   GetFacilitiesByOrganizationDocument,
   GetFacilitiesByOrganizationQuery,
   useCreateFacilityMutation,
@@ -36,6 +37,12 @@ const FacilityModal: FC<FacilityModalProps> = ({ facility, onComplete }) => {
               id: facility.id!,
               facility: values as FacilityPatch,
             },
+            awaitRefetchQueries: true,
+            refetchQueries: [
+              {
+                query: GetDistinctTagsDocument,
+              },
+            ],
             update: (proxy, { data }) => {
               if (data?.updateFacility?.facility) {
                 const result = cloneDeep(
@@ -76,6 +83,11 @@ const FacilityModal: FC<FacilityModalProps> = ({ facility, onComplete }) => {
                 organizationId: current!.id,
               },
             },
+            refetchQueries: [
+              {
+                query: GetDistinctTagsDocument,
+              },
+            ],
             update: (proxy, { data }) => {
               if (data?.createFacility?.facility) {
                 const result = cloneDeep(

@@ -264,6 +264,21 @@ CREATE FUNCTION app_public.facilities_metrics(facility app_public.facilities, na
 
 
 --
+-- Name: facility_distinct_tags(); Type: FUNCTION; Schema: app_public; Owner: -
+--
+
+CREATE FUNCTION app_public.facility_distinct_tags() RETURNS text[]
+    LANGUAGE sql IMMUTABLE STRICT
+    AS $$
+    select array_agg(distinct c)
+    from (
+        select unnest(tags)
+        from app_public.facilities
+        ) as t(c);
+$$;
+
+
+--
 -- Name: facility_rankings(text, text[], interval); Type: FUNCTION; Schema: app_public; Owner: -
 --
 
@@ -5236,6 +5251,14 @@ REVOKE ALL ON FUNCTION app_private.tg__timestamps() FROM PUBLIC;
 
 REVOKE ALL ON FUNCTION app_public.facilities_metrics(facility app_public.facilities, name text, "interval" interval) FROM PUBLIC;
 GRANT ALL ON FUNCTION app_public.facilities_metrics(facility app_public.facilities, name text, "interval" interval) TO visitor;
+
+
+--
+-- Name: FUNCTION facility_distinct_tags(); Type: ACL; Schema: app_public; Owner: -
+--
+
+REVOKE ALL ON FUNCTION app_public.facility_distinct_tags() FROM PUBLIC;
+GRANT ALL ON FUNCTION app_public.facility_distinct_tags() TO visitor;
 
 
 --

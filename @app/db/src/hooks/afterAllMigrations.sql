@@ -1,9 +1,9 @@
 INSERT INTO app_public.organizations(id, name) VALUES (1, 'ndustrial.io') ON CONFLICT DO NOTHING;
-INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (1, 1, 'Raleigh HQ', '{regionA, NC}') ON CONFLICT DO NOTHING;
-INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (2, 1, 'Kentucky HQ', '{regionA, KY}') ON CONFLICT DO NOTHING;
-INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (3, 1, 'Durham HQ', '{regionA, NC}') ON CONFLICT DO NOTHING;
-INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (4, 1, 'Chapel Hill HQ', '{regionA, NC}') ON CONFLICT DO NOTHING;
-INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (5, 1, 'Cary HQ', '{regionA, NC}') ON CONFLICT DO NOTHING;
+INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (1, 1, 'Raleigh HQ', '{regionEast, NC}') ON CONFLICT DO NOTHING;
+INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (2, 1, 'Kentucky HQ', '{regionEast, KY}') ON CONFLICT DO NOTHING;
+INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (3, 1, 'Durham HQ', '{regionEast, NC}') ON CONFLICT DO NOTHING;
+INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (4, 1, 'Chapel Hill HQ', '{regionEast, NC}') ON CONFLICT DO NOTHING;
+INSERT INTO app_public.facilities(id, organization_id, name, tags) VALUES (5, 1, 'Cary HQ', '{regionEast, NC}') ON CONFLICT DO NOTHING;
 
 INSERT INTO app_public.devices(id, facility_id, name) VALUES (1, 1, 'meter1') ON CONFLICT DO NOTHING;
 INSERT INTO app_public.devices(id, facility_id, name) VALUES (2, 2, 'meter2') ON CONFLICT DO NOTHING;

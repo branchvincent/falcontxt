@@ -102,7 +102,7 @@ const SyncOrganizationContext: FC = ({ children }) => {
   useEffect(() => {
     setTimeout(() => {
       setFakeLoading(false)
-    }, 2000)
+    }, 5000)
   }, [setFakeLoading])
 
   return (

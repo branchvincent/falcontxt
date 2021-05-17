@@ -13,3 +13,5 @@ create_metric() {
 create_metric '{"name": "Spend", "description": "Electricity spend", "query": "avg(raw.spend)", "units": "$"}'
 create_metric '{"name": "Usage", "description": "Electricity usage", "query": "avg(raw.usage)", "units": "kWh"}'
 create_metric '{"name": "Rate", "description": "Blended electricity rate", "query": "avg(raw.spend) / avg(raw.usage)", "units": "$ / kWh"}'
+# create_metric '{"name": "Volume", "description": "Inbound + outbound volume", "query": "sum(raw.inbound_volume) + sum(raw.outbound_volume)", "units": "Ibs"}'
+# create_metric '{"name": "Throughput", "description": "Energy usage per volume", "query": "sum(usage) / sum(volume) * 1000", "units": "kWh / Ibs"}'

@@ -11,7 +11,7 @@ INSERT INTO app_public.devices(id, facility_id, name) VALUES (3, 3, 'meter3') ON
 INSERT INTO app_public.devices(id, facility_id, name) VALUES (4, 4, 'meter4') ON CONFLICT DO NOTHING;
 INSERT INTO app_public.devices(id, facility_id, name) VALUES (5, 5, 'meter5') ON CONFLICT DO NOTHING;
 
-CREATE OR REPLACE FUNCTION random_between(low INT ,high INT)
+CREATE OR REPLACE FUNCTION random_between(low numeric ,high numeric)
    RETURNS INT AS
 $$
 BEGIN
@@ -50,6 +50,30 @@ SELECT
     m.id AS device_id,
     'revenue' AS label,
     random_between(35000, 65000)::text::jsonb AS data,
+    '{}'::jsonb AS metadata
+FROM
+    generate_series('2020-01-01'::timestamptz, now(), '1 day') t,
+    (SELECT id FROM app_public.devices) m
+ON CONFLICT (device_id, time, label) DO UPDATE SET data = EXCLUDED.data;
+
+INSERT INTO app_public.readings
+SELECT
+    t AS time,
+    m.id AS device_id,
+    'inbound_volume' AS label,
+    random_between(7.5e5, 12.5e5)::text::jsonb AS data,
+    '{}'::jsonb AS metadata
+FROM
+    generate_series('2020-01-01'::timestamptz, now(), '1 day') t,
+    (SELECT id FROM app_public.devices) m
+ON CONFLICT (device_id, time, label) DO UPDATE SET data = EXCLUDED.data;
+
+INSERT INTO app_public.readings
+SELECT
+    t AS time,
+    m.id AS device_id,
+    'outbound_volume' AS label,
+    random_between(7.5e5, 12.5e5)::text::jsonb AS data,
     '{}'::jsonb AS metadata
 FROM
     generate_series('2020-01-01'::timestamptz, now(), '1 day') t,

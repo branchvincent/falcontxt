@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+
+create_metric() {
+  curl 'http://localhost:3000/graphql' \
+    -H 'content-type: application/json' \
+    --data-raw $'{
+      "operationName":"createMetricDefinition",
+      "variables":{"metricDefinition":'"$1"'},
+      "query":"mutation createMetricDefinition($metricDefinition: MetricDefinitionInput\u0021) {createMetricDefinition(input: {metricDefinition: $metricDefinition}) { metricDefinition { id name description query units } } }"
+    }'
+}
+
+create_metric '{"name": "Spend", "description": "Electricity spend", "query": "avg(raw.spend)", "units": "$"}'
+create_metric '{"name": "Usage", "description": "Electricity usage", "query": "avg(raw.usage)", "units": "kWh"}'
+create_metric '{"name": "Rate", "description": "Blended electricity rate", "query": "avg(raw.spend) / avg(raw.usage)", "units": "$ / kWh"}'

@@ -27,9 +27,30 @@ const createMetricDefinition: ResolverWrapperFn = async (
   return result
 }
 
+const updateMetricDefinition: ResolverWrapperFn = async (
+  resolve,
+  source,
+  args,
+  context,
+  resolveInfo,
+) => {
+  const { pgClient } = context
+  const result = await withTransaction(pgClient, async () => {
+    if (args?.input.patch) {
+      args.input.patch = fixMetricDefinitionArgs(args.input.patch)
+    }
+    const result = await resolve(source, args, context, resolveInfo)
+    await configureMetricDefinition(args?.input.patch, pgClient)
+    return result
+  })
+
+  return result
+}
+
 const wrapperResolver: WrapperResolver = {
   Mutation: {
     createMetricDefinition,
+    updateMetricDefinition,
   },
 }
 

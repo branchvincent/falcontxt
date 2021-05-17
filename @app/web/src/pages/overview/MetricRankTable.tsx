@@ -22,6 +22,7 @@ const MetricRankTable: FC<MetricRankTableProps> = ({
       metric: camelToSnakeCase(metricDefinition.name),
       tags,
     },
+    fetchPolicy: 'network-only',
   })
 
   return (

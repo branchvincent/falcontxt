@@ -865,6 +865,35 @@ type Facility implements Node {
     to: Datetime
   ): MetricsConnection!
 
+  """Reads and enables pagination through a set of `Metric`."""
+  rateSum(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
   """The facility’s slug."""
   slug: String!
 
@@ -2209,6 +2238,40 @@ type Query implements Node {
     orderBy: [RatesOrderBy!] = [NATURAL]
   ): RatesConnection
 
+  """Reads and enables pagination through a set of `RateSum`."""
+  rateSums(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RateSumCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RateSumFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `RateSum`."""
+    orderBy: [RateSumsOrderBy!] = [NATURAL]
+  ): RateSumsConnection
+
   """Reads and enables pagination through a set of `Reading`."""
   readings(
     """Read all values in the set after (below) this cursor."""
@@ -2383,6 +2446,86 @@ type RatesEdge {
 
 """Methods to use when ordering `Rate`."""
 enum RatesOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
+}
+
+type RateSum {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `RateSum` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input RateSumCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `RateSum` object types. All fields are combined with a logical ‘and.’
+"""
+input RateSumFilter {
+  """Checks for all expressions in this list."""
+  and: [RateSumFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: RateSumFilter
+
+  """Checks for any expressions in this list."""
+  or: [RateSumFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `RateSum` values."""
+type RateSumsConnection {
+  """
+  A list of edges which contains the `RateSum` and cursor to aid in pagination.
+  """
+  edges: [RateSumsEdge!]!
+
+  """A list of `RateSum` objects."""
+  nodes: [RateSum!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `RateSum` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `RateSum` edge in the connection."""
+type RateSumsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `RateSum` at the end of the edge."""
+  node: RateSum!
+}
+
+"""Methods to use when ordering `RateSum`."""
+enum RateSumsOrderBy {
   FACILITY_ID_ASC
   FACILITY_ID_DESC
   NATURAL

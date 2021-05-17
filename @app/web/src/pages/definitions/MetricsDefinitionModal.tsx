@@ -165,6 +165,9 @@ const MetricsDefinitionModal: FC<MetricsDefinitionModalProps> = ({
         >
           <Input.TextArea />
         </Form.Item>
+        <Form.Item name="units" label="Units">
+          <Input />
+        </Form.Item>
       </Form>
     </Modal>
   )

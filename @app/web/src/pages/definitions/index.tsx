@@ -56,6 +56,11 @@ const MetricDefitinions: FC = () => {
                   {metricDefitinion.query}
                 </Descriptions.Item>
               </Descriptions>
+              <Descriptions layout="horizontal">
+                <Descriptions.Item label="Units">
+                  {metricDefitinion.units}
+                </Descriptions.Item>
+              </Descriptions>
             </Card>
           </Col>
         ))}

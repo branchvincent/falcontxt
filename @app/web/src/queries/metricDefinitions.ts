@@ -8,6 +8,7 @@ export const GetMetricDefinitions = gql`
         name
         query
         description
+        units
       }
     }
   }
@@ -21,6 +22,7 @@ export const CreateMetricDefinition = gql`
         name
         description
         query
+        units
       }
     }
   }
@@ -37,6 +39,7 @@ export const UpdateMetricDefinition = gql`
         name
         description
         query
+        units
       }
     }
   }

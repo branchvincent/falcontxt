@@ -13,7 +13,7 @@ export type GetMetricDefinitionsQuery = (
     { __typename?: 'MetricDefinitionsConnection' }
     & { nodes: Array<(
       { __typename?: 'MetricDefinition' }
-      & Pick<Types.MetricDefinition, 'id' | 'name' | 'query' | 'description'>
+      & Pick<Types.MetricDefinition, 'id' | 'name' | 'query' | 'description' | 'units'>
     )> }
   )> }
 );
@@ -29,7 +29,7 @@ export type CreateMetricDefinitionMutation = (
     { __typename?: 'CreateMetricDefinitionPayload' }
     & { metricDefinition?: Types.Maybe<(
       { __typename?: 'MetricDefinition' }
-      & Pick<Types.MetricDefinition, 'id' | 'name' | 'description' | 'query'>
+      & Pick<Types.MetricDefinition, 'id' | 'name' | 'description' | 'query' | 'units'>
     )> }
   )> }
 );
@@ -46,7 +46,7 @@ export type UpdateMetricDefinitionMutation = (
     { __typename?: 'UpdateMetricDefinitionPayload' }
     & { metricDefinition?: Types.Maybe<(
       { __typename?: 'MetricDefinition' }
-      & Pick<Types.MetricDefinition, 'id' | 'name' | 'description' | 'query'>
+      & Pick<Types.MetricDefinition, 'id' | 'name' | 'description' | 'query' | 'units'>
     )> }
   )> }
 );
@@ -60,6 +60,7 @@ export const GetMetricDefinitionsDocument = gql`
       name
       query
       description
+      units
     }
   }
 }
@@ -99,6 +100,7 @@ export const CreateMetricDefinitionDocument = gql`
       name
       description
       query
+      units
     }
   }
 }
@@ -137,6 +139,7 @@ export const UpdateMetricDefinitionDocument = gql`
       name
       description
       query
+      units
     }
   }
 }

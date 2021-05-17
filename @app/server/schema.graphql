@@ -746,6 +746,8 @@ enum FacilitiesOrderBy {
   PRIMARY_KEY_DESC
   SLUG_ASC
   SLUG_DESC
+  TAGS_ASC
+  TAGS_DESC
   UPDATED_AT_ASC
   UPDATED_AT_DESC
 }
@@ -820,35 +822,6 @@ type Facility implements Node {
     offset: Int
   ): MetricsConnection!
 
-  """Reads and enables pagination through a set of `Metric`."""
-  myTest(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MetricFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-    from: Datetime!
-    interval: IntervalInput
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-    to: Datetime
-  ): MetricsConnection!
-
   """The facility’s name."""
   name: String!
 
@@ -863,11 +836,40 @@ type Facility implements Node {
   """The facility’s associated organization."""
   organizationId: Int!
 
+  """Reads and enables pagination through a set of `Metric`."""
+  rate(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
+
   """The facility’s slug."""
   slug: String!
 
   """Reads and enables pagination through a set of `Metric`."""
-  test(
+  spend(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -894,125 +896,39 @@ type Facility implements Node {
     offset: Int
     to: Datetime
   ): MetricsConnection!
-
-  """Reads and enables pagination through a set of `Metric`."""
-  test10(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MetricFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-    from: Datetime!
-    interval: IntervalInput
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-    to: Datetime
-  ): MetricsConnection!
-
-  """Reads and enables pagination through a set of `Metric`."""
-  test2(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MetricFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-    from: Datetime!
-    interval: IntervalInput
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-    to: Datetime
-  ): MetricsConnection!
-
-  """Reads and enables pagination through a set of `Metric`."""
-  test3(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MetricFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-    from: Datetime!
-    interval: IntervalInput
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-    to: Datetime
-  ): MetricsConnection!
-
-  """Reads and enables pagination through a set of `Metric`."""
-  testTest(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MetricFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-    from: Datetime!
-    interval: IntervalInput
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-    to: Datetime
-  ): MetricsConnection!
+  tags: [String]
 
   """The time this facility was updated."""
   updatedAt: Datetime
+
+  """Reads and enables pagination through a set of `Metric`."""
+  usage(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: MetricFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    from: Datetime!
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    to: Datetime
+  ): MetricsConnection!
 }
 
 """
@@ -1034,6 +950,9 @@ input FacilityCondition {
 
   """Checks for equality with the object’s `slug` field."""
   slug: String
+
+  """Checks for equality with the object’s `tags` field."""
+  tags: [String]
 
   """Checks for equality with the object’s `updatedAt` field."""
   updatedAt: Datetime
@@ -1067,6 +986,9 @@ input FacilityFilter {
   """Filter by the object’s `slug` field."""
   slug: StringFilter
 
+  """Filter by the object’s `tags` field."""
+  tags: StringListFilter
+
   """Filter by the object’s `updatedAt` field."""
   updatedAt: DatetimeFilter
 }
@@ -1087,6 +1009,7 @@ input FacilityInput {
 
   """The facility’s slug."""
   slug: String!
+  tags: [String]
 
   """The time this facility was updated."""
   updatedAt: Datetime
@@ -1110,9 +1033,71 @@ input FacilityPatch {
 
   """The facility’s slug."""
   slug: String
+  tags: [String]
 
   """The time this facility was updated."""
   updatedAt: Datetime
+}
+
+type FacilityRanking {
+  id: Int
+  rank: Int
+  tags: [String]
+  value: Float
+}
+
+"""
+A filter to be used against `FacilityRanking` object types. All fields are combined with a logical ‘and.’
+"""
+input FacilityRankingFilter {
+  """Checks for all expressions in this list."""
+  and: [FacilityRankingFilter!]
+
+  """Filter by the object’s `id` field."""
+  id: IntFilter
+
+  """Negates the expression."""
+  not: FacilityRankingFilter
+
+  """Checks for any expressions in this list."""
+  or: [FacilityRankingFilter!]
+
+  """Filter by the object’s `rank` field."""
+  rank: IntFilter
+
+  """Filter by the object’s `tags` field."""
+  tags: StringListFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `FacilityRanking` values."""
+type FacilityRankingsConnection {
+  """
+  A list of edges which contains the `FacilityRanking` and cursor to aid in pagination.
+  """
+  edges: [FacilityRankingsEdge!]!
+
+  """A list of `FacilityRanking` objects."""
+  nodes: [FacilityRanking!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """
+  The count of *all* `FacilityRanking` you could get from the connection.
+  """
+  totalCount: Int!
+}
+
+"""A `FacilityRanking` edge in the connection."""
+type FacilityRankingsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `FacilityRanking` at the end of the edge."""
+  node: FacilityRanking!
 }
 
 """
@@ -1318,7 +1303,7 @@ type MetricDefinition implements Node {
   """The metric’s definition."""
   query: String!
 
-  """The units of the metric."""
+  """The facility’s tags."""
   units: String
 }
 
@@ -1386,7 +1371,7 @@ input MetricDefinitionInput {
   """The metric’s definition."""
   query: String!
 
-  """The units of the metric."""
+  """The facility’s tags."""
   units: String
 }
 
@@ -1406,7 +1391,7 @@ input MetricDefinitionPatch {
   """The metric’s definition."""
   query: String
 
-  """The units of the metric."""
+  """The facility’s tags."""
   units: String
 }
 
@@ -1760,86 +1745,6 @@ type Mutation {
   ): UpdateOrganizationPayload
 }
 
-type MyTest {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
-"""
-A condition to be used against `MyTest` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input MyTestCondition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
-
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
-
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
-
-"""
-A filter to be used against `MyTest` object types. All fields are combined with a logical ‘and.’
-"""
-input MyTestFilter {
-  """Checks for all expressions in this list."""
-  and: [MyTestFilter!]
-
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
-
-  """Negates the expression."""
-  not: MyTestFilter
-
-  """Checks for any expressions in this list."""
-  or: [MyTestFilter!]
-
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
-
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `MyTest` values."""
-type MyTestsConnection {
-  """
-  A list of edges which contains the `MyTest` and cursor to aid in pagination.
-  """
-  edges: [MyTestsEdge!]!
-
-  """A list of `MyTest` objects."""
-  nodes: [MyTest!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `MyTest` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `MyTest` edge in the connection."""
-type MyTestsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `MyTest` at the end of the edge."""
-  node: MyTest!
-}
-
-"""Methods to use when ordering `MyTest`."""
-enum MyTestsOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
-}
-
 """An object with a globally unique `ID`."""
 interface Node {
   """
@@ -2137,6 +2042,35 @@ type Query implements Node {
     nodeId: ID!
   ): Facility
   facilityBySlug(slug: String!): Facility
+
+  """Reads and enables pagination through a set of `FacilityRanking`."""
+  facilityRankings(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: FacilityRankingFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+    interval: IntervalInput
+
+    """Only read the last `n` values of the set."""
+    last: Int
+    metric: String!
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+    tags: [String]
+  ): FacilityRankingsConnection
   metricDefinition(id: Int!): MetricDefinition
   metricDefinitionByName(name: String!): MetricDefinition
 
@@ -2181,40 +2115,6 @@ type Query implements Node {
     """The method to use when ordering `MetricDefinition`."""
     orderBy: [MetricDefinitionsOrderBy!] = [PRIMARY_KEY_ASC]
   ): MetricDefinitionsConnection
-
-  """Reads and enables pagination through a set of `MyTest`."""
-  myTests(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: MyTestCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: MyTestFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `MyTest`."""
-    orderBy: [MyTestsOrderBy!] = [NATURAL]
-  ): MyTestsConnection
 
   """Fetches an object given its globally unique `ID`."""
   node(
@@ -2277,6 +2177,40 @@ type Query implements Node {
   """
   query: Query!
 
+  """Reads and enables pagination through a set of `Rate`."""
+  rates(
+    """Read all values in the set after (below) this cursor."""
+    after: Cursor
+
+    """Read all values in the set before (above) this cursor."""
+    before: Cursor
+
+    """
+    A condition to be used in determining which values should be returned by the collection.
+    """
+    condition: RateCondition
+
+    """
+    A filter to be used in determining which values should be returned by the collection.
+    """
+    filter: RateFilter
+
+    """Only read the first `n` values of the set."""
+    first: Int
+
+    """Only read the last `n` values of the set."""
+    last: Int
+
+    """
+    Skip the first `n` values from our `after` cursor, an alternative to cursor
+    based pagination. May not be used with `last`.
+    """
+    offset: Int
+
+    """The method to use when ordering `Rate`."""
+    orderBy: [RatesOrderBy!] = [NATURAL]
+  ): RatesConnection
+
   """Reads and enables pagination through a set of `Reading`."""
   readings(
     """Read all values in the set after (below) this cursor."""
@@ -2311,8 +2245,8 @@ type Query implements Node {
     orderBy: [ReadingsOrderBy!] = [NATURAL]
   ): ReadingsConnection
 
-  """Reads and enables pagination through a set of `Test10`."""
-  test10s(
+  """Reads and enables pagination through a set of `Spend`."""
+  spends(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -2322,12 +2256,12 @@ type Query implements Node {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: Test10Condition
+    condition: SpendCondition
 
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: Test10Filter
+    filter: SpendFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -2341,12 +2275,12 @@ type Query implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `Test10`."""
-    orderBy: [Test10sOrderBy!] = [NATURAL]
-  ): Test10sConnection
+    """The method to use when ordering `Spend`."""
+    orderBy: [SpendsOrderBy!] = [NATURAL]
+  ): SpendsConnection
 
-  """Reads and enables pagination through a set of `Test2`."""
-  test2s(
+  """Reads and enables pagination through a set of `Usage`."""
+  usages(
     """Read all values in the set after (below) this cursor."""
     after: Cursor
 
@@ -2356,12 +2290,12 @@ type Query implements Node {
     """
     A condition to be used in determining which values should be returned by the collection.
     """
-    condition: Test2Condition
+    condition: UsageCondition
 
     """
     A filter to be used in determining which values should be returned by the collection.
     """
-    filter: Test2Filter
+    filter: UsageFilter
 
     """Only read the first `n` values of the set."""
     first: Int
@@ -2375,111 +2309,89 @@ type Query implements Node {
     """
     offset: Int
 
-    """The method to use when ordering `Test2`."""
-    orderBy: [Test2sOrderBy!] = [NATURAL]
-  ): Test2sConnection
+    """The method to use when ordering `Usage`."""
+    orderBy: [UsagesOrderBy!] = [NATURAL]
+  ): UsagesConnection
+}
 
-  """Reads and enables pagination through a set of `Test3`."""
-  test3s(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
+type Rate {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
 
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
+"""
+A condition to be used against `Rate` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input RateCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
 
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: Test3Condition
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
 
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: Test3Filter
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
 
-    """Only read the first `n` values of the set."""
-    first: Int
+"""
+A filter to be used against `Rate` object types. All fields are combined with a logical ‘and.’
+"""
+input RateFilter {
+  """Checks for all expressions in this list."""
+  and: [RateFilter!]
 
-    """Only read the last `n` values of the set."""
-    last: Int
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
 
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
+  """Negates the expression."""
+  not: RateFilter
 
-    """The method to use when ordering `Test3`."""
-    orderBy: [Test3sOrderBy!] = [NATURAL]
-  ): Test3sConnection
+  """Checks for any expressions in this list."""
+  or: [RateFilter!]
 
-  """Reads and enables pagination through a set of `Test`."""
-  tests(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
 
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
 
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: TestCondition
+"""A connection to a list of `Rate` values."""
+type RatesConnection {
+  """
+  A list of edges which contains the `Rate` and cursor to aid in pagination.
+  """
+  edges: [RatesEdge!]!
 
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: TestFilter
+  """A list of `Rate` objects."""
+  nodes: [Rate!]!
 
-    """Only read the first `n` values of the set."""
-    first: Int
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
 
-    """Only read the last `n` values of the set."""
-    last: Int
+  """The count of *all* `Rate` you could get from the connection."""
+  totalCount: Int!
+}
 
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
+"""A `Rate` edge in the connection."""
+type RatesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
 
-    """The method to use when ordering `Test`."""
-    orderBy: [TestsOrderBy!] = [NATURAL]
-  ): TestsConnection
+  """The `Rate` at the end of the edge."""
+  node: Rate!
+}
 
-  """Reads and enables pagination through a set of `TestTest`."""
-  testTests(
-    """Read all values in the set after (below) this cursor."""
-    after: Cursor
-
-    """Read all values in the set before (above) this cursor."""
-    before: Cursor
-
-    """
-    A condition to be used in determining which values should be returned by the collection.
-    """
-    condition: TestTestCondition
-
-    """
-    A filter to be used in determining which values should be returned by the collection.
-    """
-    filter: TestTestFilter
-
-    """Only read the first `n` values of the set."""
-    first: Int
-
-    """Only read the last `n` values of the set."""
-    last: Int
-
-    """
-    Skip the first `n` values from our `after` cursor, an alternative to cursor
-    based pagination. May not be used with `last`.
-    """
-    offset: Int
-
-    """The method to use when ordering `TestTest`."""
-    orderBy: [TestTestsOrderBy!] = [NATURAL]
-  ): TestTestsConnection
+"""Methods to use when ordering `Rate`."""
+enum RatesOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """A reading from a device."""
@@ -2609,6 +2521,86 @@ enum ReadingsOrderBy {
   NATURAL
   TIME_ASC
   TIME_DESC
+}
+
+type Spend {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Spend` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input SpendCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Spend` object types. All fields are combined with a logical ‘and.’
+"""
+input SpendFilter {
+  """Checks for all expressions in this list."""
+  and: [SpendFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: SpendFilter
+
+  """Checks for any expressions in this list."""
+  or: [SpendFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Spend` values."""
+type SpendsConnection {
+  """
+  A list of edges which contains the `Spend` and cursor to aid in pagination.
+  """
+  edges: [SpendsEdge!]!
+
+  """A list of `Spend` objects."""
+  nodes: [Spend!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Spend` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Spend` edge in the connection."""
+type SpendsEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Spend` at the end of the edge."""
+  node: Spend!
+}
+
+"""Methods to use when ordering `Spend`."""
+enum SpendsOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }
 
 """
@@ -2749,405 +2741,67 @@ input StringFilter {
   startsWithInsensitive: String
 }
 
-type Test {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
-type Test10 {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
 """
-A condition to be used against `Test10` object types. All fields are tested for equality and combined with a logical ‘and.’
+A filter to be used against String List fields. All fields are combined with a logical ‘and.’
 """
-input Test10Condition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
+input StringListFilter {
+  """Any array item is equal to the specified value."""
+  anyEqualTo: String
 
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
+  """Any array item is greater than the specified value."""
+  anyGreaterThan: String
 
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
+  """Any array item is greater than or equal to the specified value."""
+  anyGreaterThanOrEqualTo: String
 
-"""
-A filter to be used against `Test10` object types. All fields are combined with a logical ‘and.’
-"""
-input Test10Filter {
-  """Checks for all expressions in this list."""
-  and: [Test10Filter!]
+  """Any array item is less than the specified value."""
+  anyLessThan: String
 
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
+  """Any array item is less than or equal to the specified value."""
+  anyLessThanOrEqualTo: String
 
-  """Negates the expression."""
-  not: Test10Filter
+  """Any array item is not equal to the specified value."""
+  anyNotEqualTo: String
 
-  """Checks for any expressions in this list."""
-  or: [Test10Filter!]
+  """Contained by the specified list of values."""
+  containedBy: [String]
 
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
+  """Contains the specified list of values."""
+  contains: [String]
 
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `Test10` values."""
-type Test10sConnection {
   """
-  A list of edges which contains the `Test10` and cursor to aid in pagination.
+  Not equal to the specified value, treating null like an ordinary value.
   """
-  edges: [Test10sEdge!]!
+  distinctFrom: [String]
 
-  """A list of `Test10` objects."""
-  nodes: [Test10!]!
+  """Equal to the specified value."""
+  equalTo: [String]
 
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
+  """Greater than the specified value."""
+  greaterThan: [String]
 
-  """The count of *all* `Test10` you could get from the connection."""
-  totalCount: Int!
-}
+  """Greater than or equal to the specified value."""
+  greaterThanOrEqualTo: [String]
 
-"""A `Test10` edge in the connection."""
-type Test10sEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Test10` at the end of the edge."""
-  node: Test10!
-}
-
-"""Methods to use when ordering `Test10`."""
-enum Test10sOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
-}
-
-type Test2 {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
-"""
-A condition to be used against `Test2` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input Test2Condition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
-
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
-
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
-
-"""
-A filter to be used against `Test2` object types. All fields are combined with a logical ‘and.’
-"""
-input Test2Filter {
-  """Checks for all expressions in this list."""
-  and: [Test2Filter!]
-
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
-
-  """Negates the expression."""
-  not: Test2Filter
-
-  """Checks for any expressions in this list."""
-  or: [Test2Filter!]
-
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
-
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `Test2` values."""
-type Test2sConnection {
   """
-  A list of edges which contains the `Test2` and cursor to aid in pagination.
+  Is null (if `true` is specified) or is not null (if `false` is specified).
   """
-  edges: [Test2sEdge!]!
+  isNull: Boolean
 
-  """A list of `Test2` objects."""
-  nodes: [Test2!]!
+  """Less than the specified value."""
+  lessThan: [String]
 
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
+  """Less than or equal to the specified value."""
+  lessThanOrEqualTo: [String]
 
-  """The count of *all* `Test2` you could get from the connection."""
-  totalCount: Int!
-}
+  """Equal to the specified value, treating null like an ordinary value."""
+  notDistinctFrom: [String]
 
-"""A `Test2` edge in the connection."""
-type Test2sEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
+  """Not equal to the specified value."""
+  notEqualTo: [String]
 
-  """The `Test2` at the end of the edge."""
-  node: Test2!
-}
-
-"""Methods to use when ordering `Test2`."""
-enum Test2sOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
-}
-
-type Test3 {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
-"""
-A condition to be used against `Test3` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input Test3Condition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
-
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
-
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
-
-"""
-A filter to be used against `Test3` object types. All fields are combined with a logical ‘and.’
-"""
-input Test3Filter {
-  """Checks for all expressions in this list."""
-  and: [Test3Filter!]
-
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
-
-  """Negates the expression."""
-  not: Test3Filter
-
-  """Checks for any expressions in this list."""
-  or: [Test3Filter!]
-
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
-
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `Test3` values."""
-type Test3sConnection {
-  """
-  A list of edges which contains the `Test3` and cursor to aid in pagination.
-  """
-  edges: [Test3sEdge!]!
-
-  """A list of `Test3` objects."""
-  nodes: [Test3!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Test3` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Test3` edge in the connection."""
-type Test3sEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Test3` at the end of the edge."""
-  node: Test3!
-}
-
-"""Methods to use when ordering `Test3`."""
-enum Test3sOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
-}
-
-"""
-A condition to be used against `Test` object types. All fields are tested for equality and combined with a logical ‘and.’
-"""
-input TestCondition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
-
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
-
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
-
-"""
-A filter to be used against `Test` object types. All fields are combined with a logical ‘and.’
-"""
-input TestFilter {
-  """Checks for all expressions in this list."""
-  and: [TestFilter!]
-
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
-
-  """Negates the expression."""
-  not: TestFilter
-
-  """Checks for any expressions in this list."""
-  or: [TestFilter!]
-
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
-
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `Test` values."""
-type TestsConnection {
-  """
-  A list of edges which contains the `Test` and cursor to aid in pagination.
-  """
-  edges: [TestsEdge!]!
-
-  """A list of `Test` objects."""
-  nodes: [Test!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `Test` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `Test` edge in the connection."""
-type TestsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `Test` at the end of the edge."""
-  node: Test!
-}
-
-"""Methods to use when ordering `Test`."""
-enum TestsOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
-}
-
-type TestTest {
-  facilityId: Int
-  time: Datetime
-  value: Float
-}
-
-"""
-A condition to be used against `TestTest` object types. All fields are tested
-for equality and combined with a logical ‘and.’
-"""
-input TestTestCondition {
-  """Checks for equality with the object’s `facilityId` field."""
-  facilityId: Int
-
-  """Checks for equality with the object’s `time` field."""
-  time: Datetime
-
-  """Checks for equality with the object’s `value` field."""
-  value: Float
-}
-
-"""
-A filter to be used against `TestTest` object types. All fields are combined with a logical ‘and.’
-"""
-input TestTestFilter {
-  """Checks for all expressions in this list."""
-  and: [TestTestFilter!]
-
-  """Filter by the object’s `facilityId` field."""
-  facilityId: IntFilter
-
-  """Negates the expression."""
-  not: TestTestFilter
-
-  """Checks for any expressions in this list."""
-  or: [TestTestFilter!]
-
-  """Filter by the object’s `time` field."""
-  time: DatetimeFilter
-
-  """Filter by the object’s `value` field."""
-  value: FloatFilter
-}
-
-"""A connection to a list of `TestTest` values."""
-type TestTestsConnection {
-  """
-  A list of edges which contains the `TestTest` and cursor to aid in pagination.
-  """
-  edges: [TestTestsEdge!]!
-
-  """A list of `TestTest` objects."""
-  nodes: [TestTest!]!
-
-  """Information to aid in pagination."""
-  pageInfo: PageInfo!
-
-  """The count of *all* `TestTest` you could get from the connection."""
-  totalCount: Int!
-}
-
-"""A `TestTest` edge in the connection."""
-type TestTestsEdge {
-  """A cursor for use in pagination."""
-  cursor: Cursor
-
-  """The `TestTest` at the end of the edge."""
-  node: TestTest!
-}
-
-"""Methods to use when ordering `TestTest`."""
-enum TestTestsOrderBy {
-  FACILITY_ID_ASC
-  FACILITY_ID_DESC
-  NATURAL
-  TIME_ASC
-  TIME_DESC
-  VALUE_ASC
-  VALUE_DESC
+  """Overlaps the specified list of values."""
+  overlaps: [String]
 }
 
 """All input for the `updateDeviceByNodeId` mutation."""
@@ -3458,4 +3112,84 @@ type UpdateOrganizationPayload {
   Our root query field type. Allows us to run any query from our mutation payload.
   """
   query: Query
+}
+
+type Usage {
+  facilityId: Int
+  time: Datetime
+  value: Float
+}
+
+"""
+A condition to be used against `Usage` object types. All fields are tested for equality and combined with a logical ‘and.’
+"""
+input UsageCondition {
+  """Checks for equality with the object’s `facilityId` field."""
+  facilityId: Int
+
+  """Checks for equality with the object’s `time` field."""
+  time: Datetime
+
+  """Checks for equality with the object’s `value` field."""
+  value: Float
+}
+
+"""
+A filter to be used against `Usage` object types. All fields are combined with a logical ‘and.’
+"""
+input UsageFilter {
+  """Checks for all expressions in this list."""
+  and: [UsageFilter!]
+
+  """Filter by the object’s `facilityId` field."""
+  facilityId: IntFilter
+
+  """Negates the expression."""
+  not: UsageFilter
+
+  """Checks for any expressions in this list."""
+  or: [UsageFilter!]
+
+  """Filter by the object’s `time` field."""
+  time: DatetimeFilter
+
+  """Filter by the object’s `value` field."""
+  value: FloatFilter
+}
+
+"""A connection to a list of `Usage` values."""
+type UsagesConnection {
+  """
+  A list of edges which contains the `Usage` and cursor to aid in pagination.
+  """
+  edges: [UsagesEdge!]!
+
+  """A list of `Usage` objects."""
+  nodes: [Usage!]!
+
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """The count of *all* `Usage` you could get from the connection."""
+  totalCount: Int!
+}
+
+"""A `Usage` edge in the connection."""
+type UsagesEdge {
+  """A cursor for use in pagination."""
+  cursor: Cursor
+
+  """The `Usage` at the end of the edge."""
+  node: Usage!
+}
+
+"""Methods to use when ordering `Usage`."""
+enum UsagesOrderBy {
+  FACILITY_ID_ASC
+  FACILITY_ID_DESC
+  NATURAL
+  TIME_ASC
+  TIME_DESC
+  VALUE_ASC
+  VALUE_DESC
 }

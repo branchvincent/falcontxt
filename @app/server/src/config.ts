@@ -30,7 +30,7 @@ export const options: PostGraphileOptions = {
     }
   },
   watchPg: true,
-  graphiql: false,
+  graphiql: true,
   enhanceGraphiql: true,
   subscriptions: true,
   dynamicJson: true,
